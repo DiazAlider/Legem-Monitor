@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LEGEM · Monitor Editorial v3.2</title>
+<title>LEGEM · Monitor Editorial v3.3</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -188,50 +188,42 @@ tbody td{padding:9px 13px;vertical-align:middle;}
 .conv-a-text em{font-style:italic;color:var(--muted);}
 .conv-followup{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);margin-top:6px;font-style:italic;}
 
-/* BIBLIOTECA */
-.biblioteca-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start;}
-.biblioteca-sidebar{background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
-.bib-sidebar-title{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 14px;background:var(--cream);border-bottom:1px solid var(--border);}
-.bib-journal-btn{display:block;width:100%;text-align:left;padding:9px 14px;background:none;border:none;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;font-family:'Source Serif 4',serif;}
-.bib-journal-btn:last-child{border-bottom:none;}
-.bib-journal-btn:hover{background:var(--cream);}
-.bib-journal-btn.active{background:var(--cream);border-left:3px solid var(--accent);}
-.bib-journal-btn.loading-btn{opacity:.6;cursor:wait;}
-.bib-jname{font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:2px;font-family:'Playfair Display',serif;}
-.bib-jtag{display:flex;gap:3px;flex-wrap:wrap;}
-.biblioteca-content{background:var(--white);border:1px solid var(--border);border-radius:4px;min-height:400px;}
-.bib-welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;gap:10px;color:var(--muted);}
-.bib-welcome-icon{font-size:2.5rem;}
-.bib-welcome-text{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);}
-.bib-welcome-sub{font-size:.78rem;color:var(--muted);}
-.bib-journal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);background:var(--cream);}
-.bib-jh-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;margin-bottom:3px;}
-.bib-jh-meta{font-size:.72rem;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.bib-jh-meta a{color:var(--accent);text-decoration:none;font-family:'DM Mono',monospace;font-size:.62rem;}
-.bib-jh-meta a:hover{text-decoration:underline;}
-.bib-articles-list{padding:0;}
-.bib-article{padding:14px 22px;border-bottom:1px solid var(--border);transition:background .1s;}
-.bib-article:hover{background:var(--paper);}
-.bib-article:last-child{border-bottom:none;}
-.bib-art-title{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.4;}
-.bib-art-title a{color:var(--ink);text-decoration:none;}
-.bib-art-title a:hover{color:var(--accent);text-decoration:underline;}
-.bib-art-authors{font-size:.72rem;color:var(--muted);margin-bottom:3px;}
-.bib-art-date{font-family:'DM Mono',monospace;font-size:.6rem;color:#bbb;}
-.bib-loading{display:flex;align-items:center;gap:10px;padding:30px 22px;color:var(--muted);font-style:italic;font-size:.82rem;}
-.bib-error{padding:20px 22px;color:var(--accent-light);font-size:.82rem;font-style:italic;}
-.bib-empty{padding:20px 22px;color:var(--muted);font-size:.82rem;font-style:italic;}
-.bib-issue-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 22px 4px;background:var(--paper);border-bottom:1px solid var(--border);}
+/* BIBLIOTECA — Directorio */
+.bib-dir-controls{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center;}
+.bib-dir-search{flex:1;min-width:200px;font-family:'Source Serif 4',serif;font-size:.88rem;border:1px solid var(--border);background:var(--white);color:var(--ink);padding:9px 14px;border-radius:4px;outline:none;}
+.bib-dir-search:focus{border-color:var(--accent);}
+.bib-dir-filter{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.06em;border:1px solid var(--border);background:var(--cream);color:var(--muted);padding:7px 10px;border-radius:4px;cursor:pointer;outline:none;}
+.bib-dir-count{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:auto;}
+.bib-dir-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--white);}
+.bib-dir-row{border-bottom:1px solid var(--border);transition:background .12s;}
+.bib-dir-row:last-child{border-bottom:none;}
+.bib-dir-row.expanded{background:var(--paper);}
+.bib-dir-main{display:flex;align-items:center;gap:12px;padding:11px 18px;cursor:pointer;user-select:none;}
+.bib-dir-main:hover{background:var(--cream);}
+.bib-dir-row.expanded .bib-dir-main{background:var(--cream);border-bottom:1px solid var(--border);}
+.bib-dir-num{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);width:22px;flex-shrink:0;text-align:right;}
+.bib-dir-name{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:600;flex:1;min-width:0;}
+.bib-dir-uni{font-size:.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;}
+.bib-dir-badges{display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0;}
+.bib-dir-arrow{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);flex-shrink:0;transition:transform .2s;}
+.bib-dir-row.expanded .bib-dir-arrow{transform:rotate(90deg);}
+.bib-dir-detail{display:none;padding:14px 18px 16px 52px;gap:20px;flex-wrap:wrap;}
+.bib-dir-row.expanded .bib-dir-detail{display:flex;}
+.bib-dir-section{min-width:160px;}
+.bib-dir-section-label{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.bib-dir-sires{display:flex;gap:3px;flex-wrap:wrap;}
+.bib-dir-areas{font-size:.75rem;color:var(--ink);line-height:1.6;}
+.bib-dir-links{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
+.bib-dir-link{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--accent);text-decoration:none;letter-spacing:.04em;}
+.bib-dir-link:hover{text-decoration:underline;}
+.bib-dir-link.primary{background:var(--accent);color:var(--white);padding:5px 12px;border-radius:2px;text-align:center;transition:background .15s;}
+.bib-dir-link.primary:hover{background:var(--accent-light);text-decoration:none;}
+.bib-dir-issn{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);}
+.bib-dir-ciudad{font-size:.7rem;color:var(--muted);}
+.bib-dir-empty{padding:32px;text-align:center;font-style:italic;color:var(--muted);font-size:.84rem;}
 
-.bib-art-desc{font-family:'Source Serif 4',serif;font-size:.72rem;color:var(--muted);margin:3px 0;}
-.bib-art-kw{display:flex;gap:3px;flex-wrap:wrap;margin:5px 0 2px;}
-.bib-btn-inactive{opacity:.6;}
-.bib-btn-inactive .bib-jname{color:var(--muted);}
 
-@media(max-width:960px){
-  .biblioteca-layout{grid-template-columns:1fr;}
-  .biblioteca-sidebar{margin-bottom:0;}
-}
+
 
 /* DASHBOARD */
 .dash-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
@@ -264,7 +256,7 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
 <header>
   <div class="header-inner">
     <div class="header-brand">
-      <h1>Revistas Jurídicas Colombianas <span class="vbadge">v3.2</span></h1>
+      <h1>Revistas Jurídicas Colombianas <span class="vbadge">v3.3</span></h1>
       <div class="tagline">Herramienta editorial · LEGEM · Universidad del Atlántico · Barranquilla</div>
     </div>
     <div class="header-meta">
@@ -403,26 +395,29 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
 <div class="tab-panel" id="tab-biblioteca">
   <div class="section-header">
     <div class="section-title">Biblioteca OJS</div>
-    <div class="section-subtitle">Tabla de contenidos de los últimos números · Datos en tiempo real desde los portales OJS</div>
+    <div class="section-subtitle">Directorio de revistas jurídicas colombianas · Acceso directo a cada portal</div>
   </div>
-
-  <div class="biblioteca-layout">
-    <div class="biblioteca-sidebar">
-      <div class="bib-sidebar-title">Revistas activas</div>
-      <div id="bibliotecaJournalList"></div>
-    </div>
-    <div class="biblioteca-content">
-      <div class="bib-welcome" id="bibWelcome">
-        <div class="bib-welcome-icon">📖</div>
-        <div class="bib-welcome-text">Seleccione una revista para ver su último número</div>
-        <div class="bib-welcome-sub">Los artículos se cargan directamente desde el portal OJS de cada revista</div>
-      </div>
-      <div id="bibContent" style="display:none">
-        <div class="bib-journal-header" id="bibJournalHeader"></div>
-        <div id="bibArticles"></div>
-      </div>
-    </div>
+  <div class="bib-dir-controls">
+    <input type="text" class="bib-dir-search" id="bibDirSearch"
+      placeholder="Buscar revista, universidad, área, índice…"
+      oninput="renderBibliotecaDir()">
+    <select class="bib-dir-filter" id="bibDirFilterRegion" onchange="renderBibliotecaDir()">
+      <option value="">Todas las regiones</option>
+      <option value="caribe">Región Caribe</option>
+    </select>
+    <select class="bib-dir-filter" id="bibDirFilterIdx" onchange="renderBibliotecaDir()">
+      <option value="">Todos los índices</option>
+      <option value="scopus">En Scopus</option>
+      <option value="wos">En WoS</option>
+      <option value="pub">Con Publindex</option>
+    </select>
+    <select class="bib-dir-filter" id="bibDirFilterStatus" onchange="renderBibliotecaDir()">
+      <option value="activa">Solo activas</option>
+      <option value="todas">Todas (incl. inactivas)</option>
+    </select>
+    <span class="bib-dir-count" id="bibDirCount"></span>
   </div>
+  <div class="bib-dir-list" id="bibDirList"></div>
 </div>
 
 <!-- ═══ MATRIZ ═══ -->
@@ -574,7 +569,7 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
 </div>
 
 </div><!-- /main -->
-<footer>Revistas Jurídicas Colombianas · Herramienta editorial LEGEM · Universidad del Atlántico · v3.2 · Datos Scopus 2024 · WoS MJL 2025 · Impulsado por Claude (Anthropic)</footer>
+<footer>Revistas Jurídicas Colombianas · Herramienta editorial LEGEM · Universidad del Atlántico · v3.3 · Datos Scopus 2024 · WoS MJL 2025 · Impulsado por Claude (Anthropic)</footer>
 
 <script>
 // ══════════════════════════════════════════════════
@@ -1076,7 +1071,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderJournalsGrid();
   renderPortalsList();
   renderMatriz();
-  renderBibliotecaSidebar();
+  renderBibliotecaDir();
 });
 
 // ══════════════════════════════════════════════════
@@ -1454,7 +1449,7 @@ function selectAll(){selectedJournals=new Set(JOURNALS.map(j=>j.id));renderJourn
 function selectNone(){selectedJournals=new Set();renderJournalsGrid();}
 function saveConfig(){
   renderActiveJournalsList();
-  renderBibliotecaSidebar();
+  renderBibliotecaDir();
   const m=document.getElementById('saveMsg');
   m.style.display='block';
   setTimeout(()=>m.style.display='none',2500);
@@ -1569,182 +1564,117 @@ document.addEventListener('keydown',e=>{
 // ══════════════════════════════════════════════════
 // BIBLIOTECA OJS
 // ══════════════════════════════════════════════════
-// Cadena de proxies CORS — Google Apps Script primero (más confiable)
-const GAS_PROXY = 'https://script.google.com/macros/s/AKfycbxlDtGHI67EC0f3omb8idVCNTTHdD2YzObZeBf7hbkUFG7AeO1MQXOucfTvhVyQcXa7/exec?url=';
-const PROXIES = [
-  url => `${GAS_PROXY}${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
-];
-let activeJournalId = null;
 
-// Parser de feed Atom/RSS desde texto XML
-function parseFeed(xmlText) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(xmlText, 'application/xml');
-  const isAtom = doc.querySelector('feed') !== null;
-  const items = [];
+// ══════════════════════════════════════════════════
+// BIBLIOTECA — DIRECTORIO OJS
+// ══════════════════════════════════════════════════
+let bibExpandedId = null;
 
-  const entries = isAtom
-    ? doc.querySelectorAll('entry')
-    : doc.querySelectorAll('item');
+function renderBibliotecaDir(){
+  const q = (document.getElementById('bibDirSearch')?.value||'').toLowerCase().trim();
+  const filterRegion = document.getElementById('bibDirFilterRegion')?.value||'';
+  const filterIdx    = document.getElementById('bibDirFilterIdx')?.value||'';
+  const filterStatus = document.getElementById('bibDirFilterStatus')?.value||'activa';
 
-  entries.forEach(entry => {
-    const title   = entry.querySelector('title')?.textContent?.trim() || 'Sin título';
-    const link    = isAtom
-      ? (entry.querySelector('link[rel="alternate"]')?.getAttribute('href') || entry.querySelector('link')?.getAttribute('href') || entry.querySelector('id')?.textContent || '#')
-      : (entry.querySelector('link')?.textContent?.trim() || '#');
-    const date    = entry.querySelector('published,updated,pubDate')?.textContent?.trim() || '';
-    const authors = [...entry.querySelectorAll('author name, dc\\:creator, creator')]
-      .map(a => a.textContent.trim()).filter(Boolean).join(', ');
-    // Palabras clave: subject, category, dc:subject, tags
-    const kwEls = [...entry.querySelectorAll('subject, category, dc\\:subject')];
-    const keywords = kwEls.map(k => k.getAttribute('term') || k.textContent.trim()).filter(Boolean);
-    const desc = entry.querySelector('summary,description,content')?.textContent?.replace(/<[^>]+>/g,'').trim().slice(0,160) || '';
+  let data = JOURNALS.slice();
 
-    items.push({ title, link, date, authors, keywords, desc });
-  });
+  if(filterStatus === 'activa') data = data.filter(j=>j.status==='activa');
 
-  return items;
-}
+  if(filterRegion === 'caribe') data = data.filter(j=>j.caribe);
+  if(filterIdx === 'scopus')    data = data.filter(j=>j.scopus);
+  if(filterIdx === 'wos')       data = data.filter(j=>j.wosCol);
+  if(filterIdx === 'pub')       data = data.filter(j=>j.publindex&&j.publindex!=='nd');
 
-function renderBibliotecaSidebar(){
-  const statusLabel = {activa:'', inactiva:'Inactiva', verificar:'Por verificar', reclasificar:'Reclasificar'};
-  const statusColor = {activa:'', inactiva:'#721c24', verificar:'#856404', reclasificar:'#7a6f62'};
-  const all = JOURNALS.filter(j=>selectedJournals.has(j.id) || j.status==='activa');
-  // Show activas first, then the rest
-  const sorted = [
-    ...JOURNALS.filter(j=>j.status==='activa'),
-    ...JOURNALS.filter(j=>j.status!=='activa')
-  ];
-  document.getElementById('bibliotecaJournalList').innerHTML = sorted.map(j=>`
-    <button class="bib-journal-btn ${activeJournalId===j.id?'active':''} ${j.status!=='activa'?'bib-btn-inactive':''}"
-      onclick="loadJournalFeed('${j.id}')" id="bibBtn_${j.id}">
-      <div class="bib-jname">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}</div>
-      <div class="bib-jtag">
-        ${j.scopusQ?`<span class="tag ${j.scopusQ}">${j.scopusQ.toUpperCase()}</span>`:''}
-        ${j.wosCol?`<span class="tag esci">${j.wosCol}</span>`:''}
-        ${j.publindex&&j.publindex!=='nd'?`<span class="tag ${j.publindex}">${j.publindex.toUpperCase()}</span>`:''}
-        ${j.status!=='activa'?`<span style="font-family:'DM Mono',monospace;font-size:.5rem;background:#f8d7da;color:${statusColor[j.status]};padding:1px 5px;border-radius:2px;text-transform:uppercase">${statusLabel[j.status]||j.status}</span>`:''}
-      </div>
-    </button>
-  `).join('');
-}
-
-async function loadJournalFeed(journalId){
-  const j = JOURNALS.find(x=>x.id===journalId);
-  if(!j) return;
-
-  activeJournalId = journalId;
-
-  document.querySelectorAll('.bib-journal-btn').forEach(b=>b.classList.remove('active'));
-  const btn = document.getElementById('bibBtn_'+journalId);
-  if(btn) btn.classList.add('active','loading-btn');
-
-  document.getElementById('bibWelcome').style.display='none';
-  document.getElementById('bibContent').style.display='block';
-
-  document.getElementById('bibJournalHeader').innerHTML=`
-    <div class="bib-jh-name">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}</div>
-    <div class="bib-jh-meta">
-      <span>${j.uni}</span>
-      ${j.scopusQ?`<span class="tag ${j.scopusQ}">${j.scopusQ.toUpperCase()} Scopus</span>`:''}
-      ${j.wosCol?`<span class="tag esci">${j.wosCol} WoS</span>`:''}
-      ${j.url&&j.url!=='#'?`<a href="${j.url}" target="_blank">Ver portal OJS ↗</a>`:''}
-    </div>
-    ${j.sires&&j.sires.length?`
-    <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;align-items:center">
-      <span style="font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px">SIRes:</span>
-      ${j.sires.map(s=>`<span class="tag">${s}</span>`).join('')}
-    </div>`:''}
-  `;
-
-  if(!j.feed){
-    document.getElementById('bibArticles').innerHTML=`
-      <div class="bib-error" style="padding:24px 22px">
-        <div style="margin-bottom:10px">⚠️ Feed OJS no configurado para esta revista.</div>
-        ${j.url&&j.url!=='#'?`<a href="${j.url}" target="_blank" class="btn-secondary" style="display:inline-block;margin-top:4px">Visitar portal directamente ↗</a>`:''}
-      </div>`;
-    if(btn) btn.classList.remove('loading-btn');
-    return;
+  if(q.length >= 2){
+    data = data.filter(j=>
+      j.name.toLowerCase().includes(q) ||
+      j.uni.toLowerCase().includes(q) ||
+      (j.area&&j.area.some(a=>a.toLowerCase().includes(q))) ||
+      (j.nota&&j.nota.toLowerCase().includes(q)) ||
+      (j.issn&&j.issn.includes(q)) ||
+      (j.ciudad&&j.ciudad.toLowerCase().includes(q)) ||
+      (j.dept&&j.dept.toLowerCase().includes(q)) ||
+      (j.sires&&j.sires.some(s=>s.toLowerCase().includes(q)))
+    );
   }
 
-  document.getElementById('bibArticles').innerHTML=`<div class="bib-loading"><div class="spinner"></div> Cargando últimos artículos desde el portal OJS…</div>`;
+  // LEGEM always last
+  data.sort((a,b)=>{
+    if(a.legem) return 1; if(b.legem) return -1;
+    return (b.sjr||0)-(a.sjr||0);
+  });
 
-  // Cadena de proxies + intento directo como último recurso
-  let items = null;
-  let errorMsg = '';
+  const count = document.getElementById('bibDirCount');
+  if(count) count.textContent = `${data.length} revista${data.length!==1?'s':''}`;
 
-  const tryProxy = async (proxyFn) => {
-    const res = await fetch(proxyFn(j.feed), {signal: AbortSignal.timeout(10000)});
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text = await res.text();
-    // allorigins raw devuelve XML directo; otros también
-    // Si parece JSON (allorigins /get), extraer .contents
-    if(text.trim().startsWith('{')) {
-      const json = JSON.parse(text);
-      return json.contents || json.data || text;
-    }
-    return text;
+  const statusBadge = {
+    inactiva:'<span style="font-family:\'DM Mono\',monospace;font-size:.5rem;background:#f8d7da;color:#721c24;padding:1px 5px;border-radius:2px;margin-left:3px">Inactiva</span>',
+    verificar:'<span style="font-family:\'DM Mono\',monospace;font-size:.5rem;background:#fff3cd;color:#856404;padding:1px 5px;border-radius:2px;margin-left:3px">Por verificar</span>',
+    reclasificar:'<span style="font-family:\'DM Mono\',monospace;font-size:.5rem;background:#e8e0cc;color:#7a6f62;padding:1px 5px;border-radius:2px;margin-left:3px">Reclasificar</span>',
   };
 
-  for(const proxyFn of PROXIES) {
-    if(items && items.length > 0) break;
-    try {
-      const xml = await tryProxy(proxyFn);
-      const parsed = parseFeed(xml);
-      if(parsed.length > 0) items = parsed;
-    } catch(e) { errorMsg = e.message; }
-  }
-
-  // Último intento: fetch directo (funciona si el servidor tiene CORS abierto)
-  if(!items || items.length === 0) {
-    try {
-      const res = await fetch(j.feed, {signal: AbortSignal.timeout(8000)});
-      const text = await res.text();
-      items = parseFeed(text);
-    } catch(e) { errorMsg = e.message; }
-  }
-
-  if(btn) btn.classList.remove('loading-btn');
-
-  if(!items || items.length === 0){
-    document.getElementById('bibArticles').innerHTML=`
-      <div class="bib-error" style="padding:24px 22px">
-        <div style="margin-bottom:8px">No se pudo cargar el feed de esta revista. El portal OJS puede estar temporalmente no disponible.</div>
-        <div style="font-size:.68rem;color:var(--muted);margin-bottom:12px">Error técnico: ${errorMsg||'sin respuesta'}</div>
-        ${j.url&&j.url!=='#'?`<a href="${j.url}" target="_blank" class="btn-secondary" style="display:inline-block">Visitar portal directamente ↗</a>`:''}
-      </div>`;
+  const container = document.getElementById('bibDirList');
+  if(!data.length){
+    container.innerHTML='<div class="bib-dir-empty">No se encontraron revistas con esos criterios.</div>';
     return;
   }
 
-  let html = `<div class="bib-issue-label">Últimos ${items.length} artículos publicados</div><div class="bib-articles-list">`;
+  container.innerHTML = data.map((j,i)=>{
+    const isExp = bibExpandedId === j.id;
+    const siresHtml = j.sires?.length
+      ? j.sires.map(s=>`<span class="tag">${s}</span>`).join('')
+      : '<span style="font-size:.7rem;color:var(--muted);font-style:italic">No registrados aún</span>';
 
-  items.slice(0,20).forEach(item => {
-    let dateStr = '';
-    if(item.date) {
-      try { dateStr = new Date(item.date).toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'}); }
-      catch(e) { dateStr = item.date.slice(0,10); }
-    }
+    const areasHtml = j.area?.length
+      ? j.area.join(' · ')
+      : '—';
 
-    const kwHtml = item.keywords.length
-      ? `<div class="bib-art-kw">${item.keywords.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}</div>`
-      : '';
+    const linksHtml = [
+      j.url&&j.url!=='#' ? `<a href="${j.url}" target="_blank" class="bib-dir-link primary">Ver portal OJS ↗</a>` : '',
+      j.feed ? `<a href="${j.feed}" target="_blank" class="bib-dir-link">Feed Atom ↗</a>` : '',
+    ].filter(Boolean).join('');
 
-    html+=`
-      <div class="bib-article">
-        <div class="bib-art-title"><a href="${item.link}" target="_blank">${item.title}</a></div>
-        ${item.authors?`<div class="bib-art-authors">${item.authors}</div>`:''}
-        ${item.desc?`<div class="bib-art-desc">${item.desc}…</div>`:''}
-        ${kwHtml}
-        ${dateStr?`<div class="bib-art-date">${dateStr}</div>`:''}
+    return `<div class="bib-dir-row${isExp?' expanded':''}" id="bibrow_${j.id}">
+      <div class="bib-dir-main" onclick="toggleBibRow('${j.id}')">
+        <span class="bib-dir-num">${String(i+1).padStart(2,'0')}</span>
+        <div style="flex:1;min-width:0">
+          <div class="bib-dir-name">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}${statusBadge[j.status]||''}</div>
+          <div class="bib-dir-uni">${j.uni}${j.ciudad&&j.ciudad!=='No disponible'?' · '+j.ciudad:''}</div>
+        </div>
+        <div class="bib-dir-badges">
+          ${j.scopusQ?`<span class="tag ${j.scopusQ}">${j.scopusQ.toUpperCase()}</span>`:''}
+          ${j.wosCol?`<span class="tag esci">${j.wosCol}</span>`:''}
+          ${j.publindex&&j.publindex!=='nd'?`<span class="tag ${j.publindex}">${j.publindex.toUpperCase()}</span>`:''}
+          ${j.caribe&&!j.legem?`<span class="caribe-badge">Caribe</span>`:''}
+          ${j.legem?`<span class="tag legem">Tu revista</span>`:''}
+        </div>
+        <span class="bib-dir-arrow">▸</span>
       </div>
-    `;
-  });
+      <div class="bib-dir-detail">
+        <div class="bib-dir-section">
+          <div class="bib-dir-section-label">SIRes</div>
+          <div class="bib-dir-sires">${siresHtml}</div>
+        </div>
+        <div class="bib-dir-section">
+          <div class="bib-dir-section-label">Áreas temáticas</div>
+          <div class="bib-dir-areas">${areasHtml}</div>
+          ${j.issn&&j.issn!=='—'?`<div class="bib-dir-issn" style="margin-top:5px">ISSN: ${j.issn}</div>`:''}
+          ${j.sjr?`<div class="bib-dir-issn" style="margin-top:3px">SJR 2024: ${j.sjr.toFixed(3)}</div>`:''}
+        </div>
+        ${linksHtml?`<div class="bib-dir-section"><div class="bib-dir-section-label">Acceso</div><div class="bib-dir-links">${linksHtml}</div></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
 
-  html+='</div>';
-  document.getElementById('bibArticles').innerHTML=html;
+function toggleBibRow(id){
+  bibExpandedId = bibExpandedId === id ? null : id;
+  renderBibliotecaDir();
+  if(bibExpandedId){
+    setTimeout(()=>{
+      document.getElementById('bibrow_'+id)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }, 50);
+  }
 }
 </script>
 </body>
