@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LEGEM · Monitor Editorial v3.3</title>
+<title>Revistas Jurídicas Colombianas · Monitor Editorial v4.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -249,6 +249,64 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
   .nav-tabs-inner{padding:0 20px;}
   .stats-bar{gap:10px;}
 }
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(15,12,9,.55);
+  z-index:1000;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(2px);
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--white);border-radius:6px;max-width:780px;width:100%;
+  max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.25);
+  animation:modalIn .18s ease;
+}
+@keyframes modalIn{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{
+  background:var(--ink);color:var(--paper);padding:20px 24px 16px;
+  position:sticky;top:0;z-index:1;border-radius:6px 6px 0 0;
+}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:4px;}
+.modal-uni{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:#a89f8e;text-transform:uppercase;}
+.modal-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.modal-close{
+  position:absolute;top:14px;right:18px;background:none;border:none;
+  color:var(--paper);font-size:1.4rem;cursor:pointer;line-height:1;opacity:.7;
+}
+.modal-close:hover{opacity:1;}
+.bib-dir-name:hover{color:var(--accent);text-decoration:underline;}
+.td-name:hover{color:var(--accent);}
+.modal-body{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:600px){.modal-body{grid-template-columns:1fr;}}
+.modal-section-title{
+  font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+  padding-bottom:4px;border-bottom:1px solid var(--border);
+}
+.modal-row{display:flex;justify-content:space-between;gap:8px;
+  font-size:.76rem;padding:4px 0;border-bottom:1px solid var(--paper);}
+.modal-row-label{color:var(--muted);flex-shrink:0;}
+.modal-row-val{font-weight:500;text-align:right;}
+.modal-sires{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.modal-sir-tag{
+  font-family:'DM Mono',monospace;font-size:.55rem;
+  background:var(--tag-bg);color:var(--muted);
+  padding:2px 6px;border-radius:2px;
+}
+.modal-footer{
+  padding:12px 24px 16px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.modal-nota{font-size:.72rem;color:var(--muted);font-style:italic;flex:1;}
+.modal-btn{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;
+  background:var(--ink);color:var(--paper);border:none;padding:6px 14px;
+  border-radius:3px;cursor:pointer;text-decoration:none;white-space:nowrap;
+}
+.modal-btn:hover{background:var(--accent);}
+.modal-btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--border);}
+.modal-btn-ghost:hover{background:var(--paper);}
 </style>
 </head>
 <body>
@@ -256,12 +314,12 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
 <header>
   <div class="header-inner">
     <div class="header-brand">
-      <h1>Revistas Jurídicas Colombianas <span class="vbadge">v3.3</span></h1>
-      <div class="tagline">Herramienta editorial · LEGEM · Universidad del Atlántico · Barranquilla</div>
+      <h1>Revistas Jurídicas Colombianas <span class="vbadge">v4.0</span></h1>
+      <div class="tagline">Ecosistema editorial jurídico colombiano · Herramienta de análisis y seguimiento</div>
     </div>
     <div class="header-meta">
       <div class="date-display" id="dateDisplay"></div>
-      <div>~75 revistas · datos verificados</div>
+      <div>~75 revistas activas · Scopus 2024 · WoS 2025</div>
     </div>
   </div>
 </header>
@@ -269,12 +327,10 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
 <div class="nav-tabs">
   <div class="nav-tabs-inner">
     <button class="tab-btn active" onclick="switchTab('dashboard',this)">Dashboard</button>
-    <button class="tab-btn" onclick="switchTab('buscador',this)">Buscador</button>
-    <button class="tab-btn" onclick="switchTab('biblioteca',this)">Biblioteca OJS</button>
-    <button class="tab-btn" onclick="switchTab('matriz',this)">Matriz Bibliométrica</button>
-    <button class="tab-btn" onclick="switchTab('config',this)">Configurar</button>
+    <button class="tab-btn" onclick="switchTab('revistas',this)">Revistas</button>
+    <button class="tab-btn" onclick="switchTab('indexaciones',this)">Indexaciones</button>
     <button class="tab-btn" onclick="switchTab('recursos',this)">Recursos</button>
-    <button class="tab-btn" onclick="switchTab('monitor',this)">Monitor editorial</button>
+    <button class="tab-btn" onclick="switchTab('monitor',this)">Monitor / LEGEM</button>
   </div>
 </div>
 
@@ -283,12 +339,10 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
 <!-- ═══ DASHBOARD ═══ -->
 <div class="tab-panel active" id="tab-dashboard">
   <div class="section-header">
-    <div class="section-title">Revistas Jurídicas Colombianas</div>
-    <div class="section-subtitle">Panorama del ecosistema editorial · ~75 revistas jurídicas colombianas · datos verificados Scopus 2024 · WoS MJL 2025</div>
+    <div class="section-title">Ecosistema Editorial Jurídico Colombiano</div>
+    <div class="section-subtitle">Panorama de ~75 revistas jurídicas · datos verificados Scopus 2024 · WoS MJL 2025</div>
   </div>
-
   <div class="stats-bar" id="statsBar"></div>
-
   <div class="dash-grid">
     <div>
       <div class="info-card">
@@ -309,210 +363,131 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
         <div class="info-card-title"><div class="icon">🔍</div>Búsqueda rápida</div>
         <div class="search-bar" style="margin-bottom:0;border:none;padding:0;background:transparent;">
           <input type="text" class="search-input" id="dashSearchInput"
-            placeholder="Buscar revista, área, índice…"
+            placeholder="Buscar revista, universidad, índice…"
             oninput="runDashSearch()" style="border:1px solid var(--border);padding:8px 12px;border-radius:4px;width:100%">
         </div>
         <div id="dashSearchResults" style="margin-top:10px;"></div>
       </div>
       <div class="info-card">
-        <div class="info-card-title"><div class="icon">★</div>Revistas mejor posicionadas</div>
+        <div class="info-card-title"><div class="icon">★</div>Mejor posicionadas (SJR)</div>
         <ul class="resource-list" id="dashTopList"></ul>
       </div>
       <div class="about-box">
         <strong>Sobre esta herramienta</strong><br><br>
-        Desarrollada para el equipo editorial de LEGEM (Universidad del Atlántico). Integra datos de Publindex/Minciencias, SCImago/Scopus 2024 y Web of Science MJL 2025.<br><br>
-        Use las pestañas para acceder a la <strong>Biblioteca OJS</strong> (artículos recientes), la <strong>Matriz Bibliométrica</strong> (indicadores internacionales), el <strong>Buscador</strong> y el <strong>Monitor Editorial</strong> con asistente IA.
+        Recurso de análisis del ecosistema editorial jurídico colombiano. Integra datos de Publindex/Minciencias, SCImago/Scopus 2024 y Web of Science MJL 2025.<br><br>
+        Use las pestañas para acceder al <strong>directorio de Revistas</strong> con SIRes, la matriz de <strong>Indexaciones</strong>, los <strong>Recursos</strong> editoriales y el <strong>Monitor / LEGEM</strong> con asistente IA.
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ MONITOR ═══ -->
-<div class="tab-panel" id="tab-monitor">
-  <div class="two-col">
-    <div>
-      <div class="section-header">
-        <div class="section-title">Consulta editorial</div>
-        <div class="section-subtitle">Asistente impulsado por Claude · Modo conversacional · ~75 revistas jurídicas colombianas</div>
-      </div>
-      <div class="query-box">
-        <div class="query-box-header"><div class="dot"></div>Asistente editorial — seleccione contexto o escriba su consulta</div>
-        <div class="prompt-groups">
-          <div class="prompt-group">
-            <div class="prompt-group-label">📋 Planificación del número</div>
-            <div class="prompt-group-btns">
-              <button class="quick-btn" onclick="setPrompt('temas')">Ideas para próximo número</button>
-              <button class="quick-btn" onclick="setPrompt('convocatorias')">Gestión de convocatorias</button>
-              <button class="quick-btn" onclick="setPrompt('autores')">Captación de autores</button>
-            </div>
-          </div>
-          <div class="prompt-group">
-            <div class="prompt-group-label">🔭 Seguimiento del campo</div>
-            <div class="prompt-group-btns">
-              <button class="quick-btn" onclick="setPrompt('novedades')">Novedades recientes</button>
-              <button class="quick-btn" onclick="setPrompt('tendencias')">Tendencias temáticas</button>
-              <button class="quick-btn" onclick="setPrompt('ramas')">Producción por rama</button>
-            </div>
-          </div>
-          <div class="prompt-group">
-            <div class="prompt-group-label">🎯 Posicionamiento estratégico</div>
-            <div class="prompt-group-btns">
-              <button class="quick-btn" onclick="setPrompt('comparar')">Comparar con LEGEM</button>
-              <button class="quick-btn" onclick="setPrompt('indexacion')">Ruta hacia Scopus/WoS</button>
-              <button class="quick-btn" onclick="setPrompt('nichos')">Nichos desatendidos</button>
-            </div>
-          </div>
-        </div>
-        <div class="query-controls">
-          <textarea class="query-textarea" id="queryInput" placeholder="Escriba su consulta… Ej: ¿Qué estrategia editorial usó Jurídicas CUC para alcanzar Q1 en Scopus?"></textarea>
-          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
-            <button class="btn-primary" id="sendBtn" onclick="sendQuery()">Consultar</button>
-            <button class="btn-ghost" onclick="clearConversation()" id="clearBtn" style="display:none">Nueva conv.</button>
-          </div>
-        </div>
-      </div>
-      <div class="response-area" id="responseArea">
-        <div id="conversationThread"></div>
-        <div id="responseLabel" class="response-label" style="display:none"></div>
-        <div class="response-text" id="responseText"></div>
-      </div>
+<!-- ═══ REVISTAS ═══ -->
+<div class="tab-panel" id="tab-revistas">
+  <div class="section-header">
+    <div class="section-title">Revistas</div>
+    <div class="section-subtitle">Directorio completo · indicadores bibliométricos · SIRes · portales OJS</div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap;">
+    <button class="btn-ghost rev-view-btn active" id="btnViewList" onclick="setRevView('list',this)">☰ Lista</button>
+    <button class="btn-ghost rev-view-btn" id="btnViewTable" onclick="setRevView('table',this)">⊞ Tabla</button>
+    <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);margin-left:8px" id="revViewLabel">Vista expandible con SIRes</span>
+  </div>
+  <!-- List view (biblioteca) -->
+  <div id="revListView">
+    <div class="bib-dir-controls">
+      <input type="text" class="bib-dir-search" id="bibDirSearch"
+        placeholder="Buscar revista, universidad, índice, SIR…"
+        oninput="renderBibliotecaDir()">
+      <select class="bib-dir-filter" id="bibDirFilterRegion" onchange="renderBibliotecaDir()">
+        <option value="">Todas las regiones</option>
+        <option value="caribe">Región Caribe</option>
+      </select>
+      <select class="bib-dir-filter" id="bibDirFilterIdx" onchange="renderBibliotecaDir()">
+        <option value="">Todos los índices</option>
+        <option value="scopus">En Scopus</option>
+        <option value="wos">En WoS</option>
+        <option value="pub">Con Publindex</option>
+      </select>
+      <select class="bib-dir-filter" id="bibDirFilterStatus" onchange="renderBibliotecaDir()">
+        <option value="activa">Solo activas</option>
+        <option value="todas">Todas</option>
+      </select>
+      <span class="bib-dir-count" id="bibDirCount"></span>
     </div>
-    <div>
-      <div class="info-card">
-        <div class="info-card-title"><div class="icon">R</div>Revistas activas</div>
-        <ul class="resource-list" id="activeJournalsList"></ul>
-      </div>
-      <div class="about-box">
-        <strong>Cómo usar el monitor</strong><br><br>
-        Seleccione un contexto según su rol editorial del momento o escriba directamente. El asistente combina el conocimiento de Claude con la base de revistas.<br><br>
-        <strong>Ctrl+Enter</strong> para enviar. Para datos muy recientes, verifique en los portales OJS.
-      </div>
+    <div class="bib-dir-list" id="bibDirList"></div>
+  </div>
+  <!-- Table view (matriz) -->
+  <div id="revTableView" style="display:none">
+    <div class="matriz-controls">
+      <select id="filterCat" onchange="renderMatriz()">
+        <option value="">Todas las categorías Publindex</option>
+        <option value="a1">A1</option><option value="a2">A2</option>
+        <option value="b">B</option><option value="c">C</option>
+        <option value="nd">Sin categoría Publindex</option>
+      </select>
+      <select id="filterScopus" onchange="renderMatriz()">
+        <option value="">Con y sin Scopus</option>
+        <option value="si">En Scopus</option>
+        <option value="no">Sin Scopus</option>
+      </select>
+      <select id="filterWos" onchange="renderMatriz()">
+        <option value="">Con y sin WoS</option>
+        <option value="si">En WoS (ESCI)</option>
+        <option value="no">Sin WoS</option>
+      </select>
+      <select id="filterCaribe" onchange="renderMatriz()">
+        <option value="">Todas las regiones</option>
+        <option value="si">Región Caribe</option>
+      </select>
+      <button class="btn-ghost" onclick="resetFiltros()">Limpiar</button>
+      <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);margin-left:auto;" id="matrizCount"></span>
+    </div>
+    <div class="matriz-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="sortMatriz('name')">Revista ↕</th>
+            <th onclick="sortMatriz('publindex')">Publindex ↕</th>
+            <th onclick="sortMatriz('sjr')">SJR 2024 ↕</th>
+            <th onclick="sortMatriz('scopusQ')">Q Scopus ↕</th>
+            <th onclick="sortMatriz('wosCol')">WoS ↕</th>
+            <th>OJS</th>
+          </tr>
+        </thead>
+        <tbody id="matrizBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:10px;font-size:.72rem;color:var(--muted);font-style:italic;">
+      SCImago 2024 · WoS MJL 2025 · Publindex/Minciencias.
+      <span style="margin-left:12px;background:#f0f7ff;padding:2px 7px;border-radius:2px;">■ Azul = Región Caribe</span>
     </div>
   </div>
 </div>
 
-<!-- ═══ BIBLIOTECA OJS ═══ -->
-<div class="tab-panel" id="tab-biblioteca">
+<!-- ═══ INDEXACIONES ═══ -->
+<div class="tab-panel" id="tab-indexaciones">
   <div class="section-header">
-    <div class="section-title">Biblioteca OJS</div>
-    <div class="section-subtitle">Directorio de revistas jurídicas colombianas · Acceso directo a cada portal</div>
+    <div class="section-title">Indexaciones</div>
+    <div class="section-subtitle">Sistemas de Indexación y Resumen (SIRes) · clasificación Minciencias · presencia de revistas colombianas</div>
   </div>
-  <div class="bib-dir-controls">
-    <input type="text" class="bib-dir-search" id="bibDirSearch"
-      placeholder="Buscar revista, universidad, área, índice…"
-      oninput="renderBibliotecaDir()">
-    <select class="bib-dir-filter" id="bibDirFilterRegion" onchange="renderBibliotecaDir()">
-      <option value="">Todas las regiones</option>
-      <option value="caribe">Región Caribe</option>
+  <div class="idx-controls" style="display:flex;gap:9px;margin-bottom:18px;flex-wrap:wrap;align-items:center;">
+    <select class="bib-dir-filter" id="idxFilterTipo" onchange="renderIndexaciones()">
+      <option value="">Todos los tipos</option>
+      <option value="ibc">IBC — Índices citacionales</option>
+      <option value="base">Bases bibliográficas</option>
+      <option value="directorio">Directorios</option>
+      <option value="repositorio">Repositorios</option>
+      <option value="especializado">Especializados jurídicos</option>
+      <option value="regional">Índices regionales</option>
+      <option value="evaluacion">Sistemas de evaluación</option>
+      <option value="nacional">Índices nacionales</option>
+      <option value="otro">Otros</option>
     </select>
-    <select class="bib-dir-filter" id="bibDirFilterIdx" onchange="renderBibliotecaDir()">
-      <option value="">Todos los índices</option>
-      <option value="scopus">En Scopus</option>
-      <option value="wos">En WoS</option>
-      <option value="pub">Con Publindex</option>
-    </select>
-    <select class="bib-dir-filter" id="bibDirFilterStatus" onchange="renderBibliotecaDir()">
-      <option value="activa">Solo activas</option>
-      <option value="todas">Todas (incl. inactivas)</option>
-    </select>
-    <span class="bib-dir-count" id="bibDirCount"></span>
+    <input type="text" class="bib-dir-search" id="idxSearch" placeholder="Buscar SIR…"
+      oninput="renderIndexaciones()" style="max-width:220px">
+    <span class="bib-dir-count" id="idxCount"></span>
   </div>
-  <div class="bib-dir-list" id="bibDirList"></div>
-</div>
-
-<!-- ═══ MATRIZ ═══ -->
-<div class="tab-panel" id="tab-matriz">
-  <div class="section-header">
-    <div class="section-title">Matriz Bibliométrica</div>
-    <div class="section-subtitle">~75 revistas jurídicas colombianas · Datos verificados Scopus 2024 y WoS MJL 2025</div>
-  </div>
-
-  <div class="matriz-controls">
-    <select id="filterCat" onchange="renderMatriz()">
-      <option value="">Todas las categorías Publindex</option>
-      <option value="a1">A1</option>
-      <option value="a2">A2</option>
-      <option value="b">B</option>
-      <option value="c">C</option>
-      <option value="nd">Sin categoría Publindex</option>
-    </select>
-    <select id="filterScopus" onchange="renderMatriz()">
-      <option value="">Con y sin Scopus</option>
-      <option value="si">En Scopus</option>
-      <option value="no">Sin Scopus</option>
-    </select>
-    <select id="filterWos" onchange="renderMatriz()">
-      <option value="">Con y sin WoS</option>
-      <option value="si">En WoS (ESCI)</option>
-      <option value="no">Sin WoS</option>
-    </select>
-    <select id="filterCaribe" onchange="renderMatriz()">
-      <option value="">Todas las regiones</option>
-      <option value="si">Región Caribe</option>
-    </select>
-    <button class="btn-ghost" onclick="resetFiltros()">Limpiar</button>
-    <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);margin-left:auto;" id="matrizCount"></span>
-  </div>
-
-  <div class="matriz-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th onclick="sortMatriz('name')">Revista ↕</th>
-          <th onclick="sortMatriz('publindex')">Publindex ↕</th>
-          <th onclick="sortMatriz('sjr')">SJR 2024 ↕</th>
-          <th onclick="sortMatriz('scopusQ')">Q Scopus ↕</th>
-          <th onclick="sortMatriz('wosCol')">WoS ↕</th>
-          <th>Fuentes activas</th>
-          <th onclick="sortMatriz('freq')">Periodicidad ↕</th>
-          <th>OJS</th>
-        </tr>
-      </thead>
-      <tbody id="matrizBody"></tbody>
-    </table>
-  </div>
-  <div style="margin-top:10px;font-size:.72rem;color:var(--muted);font-style:italic;">
-    Fuentes: SCImago Journal Rank 2024 (Scopus/Elsevier) · Web of Science Master Journal List — Clarivate, consulta marzo 2025 · Publindex/Minciencias.
-    <span style="margin-left:12px;background:#f0f7ff;padding:2px 7px;border-radius:2px;">■ Azul = Región Caribe</span>
-    <span style="margin-left:8px;background:#fef9f0;border-left:3px solid var(--accent);padding:2px 7px;">★ = LEGEM</span>
-  </div>
-</div>
-
-<!-- ═══ BUSCADOR ═══ -->
-<div class="tab-panel" id="tab-buscador">
-  <div class="section-header">
-    <div class="section-title">Buscador</div>
-    <div class="section-subtitle">Buscar en la base de ~75 revistas jurídicas colombianas</div>
-  </div>
-  <div class="search-bar">
-    <span style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);">🔍</span>
-    <input type="text" class="search-input" id="searchInput"
-      placeholder="Busque por revista, universidad, área del derecho, colección (ESCI, Scopus, Redalyc…), cuartil…"
-      oninput="runSearch()">
-    <select class="search-filter" id="searchFilter" onchange="runSearch()">
-      <option value="">Todos los campos</option>
-      <option value="revista">Revistas</option>
-      <option value="fuente">Por fuente / índice</option>
-      <option value="area">Por área temática</option>
-      <option value="caribe">Región Caribe</option>
-    </select>
-  </div>
-  <div id="searchResults"><div class="no-results">Escriba al menos 2 caracteres para buscar.</div></div>
-</div>
-
-<!-- ═══ CONFIGURAR ═══ -->
-<div class="tab-panel" id="tab-config">
-  <div class="section-header">
-    <div class="section-title">Configurar revistas</div>
-    <div class="section-subtitle">Seleccione las revistas activas en el monitor y el asistente</div>
-  </div>
-  <div class="journals-grid" id="journalsGrid"></div>
-  <div style="display:flex;gap:9px;flex-wrap:wrap;">
-    <button class="btn-primary" onclick="saveConfig()">Guardar</button>
-    <button class="btn-secondary" onclick="selectAll()">Todas</button>
-    <button class="btn-ghost" onclick="selectNone()">Ninguna</button>
-  </div>
-  <div class="save-msg" id="saveMsg">✓ Configuración guardada.</div>
+  <div id="idxList"></div>
 </div>
 
 <!-- ═══ RECURSOS ═══ -->
@@ -568,8 +543,86 @@ footer{background:var(--cream);border-top:1px solid var(--border);padding:14px 4
   </div>
 </div>
 
+
+
+<!-- ═══ MONITOR / LEGEM ═══ -->
+<div class="tab-panel" id="tab-monitor">
+  <!-- LEGEM Strategic Panel -->
+  <div class="legem-panel" style="background:var(--ink);color:var(--paper);border-radius:6px;padding:20px 24px;margin-bottom:24px;">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:12px;">
+      <span style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--paper)">★ LEGEM</span>
+      <span style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:#a89f8e;text-transform:uppercase">Revista de Derecho · Universidad del Atlántico · Barranquilla</span>
+      <span style="font-family:'DM Mono',monospace;font-size:.58rem;background:var(--accent);color:white;padding:2px 8px;border-radius:2px;margin-left:auto">Análisis estratégico</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;" id="legemStats"></div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);">
+      <div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#a89f8e;margin-bottom:8px;">Brechas de indexación vs. revistas Caribe</div>
+      <div id="legemGaps" style="font-size:.78rem;line-height:1.8;color:#d4c9b0;"></div>
+    </div>
+  </div>
+
+  <!-- Conversational Monitor -->
+  <div class="two-col">
+    <div>
+      <div class="section-header">
+        <div class="section-title">Consulta editorial</div>
+        <div class="section-subtitle">Asistente impulsado por Claude · Modo conversacional</div>
+      </div>
+      <div class="query-box">
+        <div class="query-box-header"><div class="dot"></div>Asistente editorial — seleccione contexto o escriba su consulta</div>
+        <div class="prompt-groups">
+          <div class="prompt-group">
+            <div class="prompt-group-label">📋 Planificación del número</div>
+            <div class="prompt-group-btns">
+              <button class="quick-btn" onclick="setPrompt('temas')">Ideas para próximo número</button>
+              <button class="quick-btn" onclick="setPrompt('convocatorias')">Gestión de convocatorias</button>
+              <button class="quick-btn" onclick="setPrompt('autores')">Captación de autores</button>
+            </div>
+          </div>
+          <div class="prompt-group">
+            <div class="prompt-group-label">🔭 Seguimiento del campo</div>
+            <div class="prompt-group-btns">
+              <button class="quick-btn" onclick="setPrompt('novedades')">Novedades recientes</button>
+              <button class="quick-btn" onclick="setPrompt('tendencias')">Tendencias temáticas</button>
+              <button class="quick-btn" onclick="setPrompt('ramas')">Producción por rama</button>
+            </div>
+          </div>
+          <div class="prompt-group">
+            <div class="prompt-group-label">🎯 Posicionamiento LEGEM</div>
+            <div class="prompt-group-btns">
+              <button class="quick-btn" onclick="setPrompt('comparar')">Comparar con pares Caribe</button>
+              <button class="quick-btn" onclick="setPrompt('indexacion')">Ruta hacia Scopus/WoS</button>
+              <button class="quick-btn" onclick="setPrompt('nichos')">Nichos desatendidos</button>
+            </div>
+          </div>
+        </div>
+        <div class="query-controls">
+          <textarea class="query-textarea" id="queryInput" placeholder="Escriba su consulta… Ej: ¿Qué estrategia editorial usó Jurídicas CUC para alcanzar Q1 en Scopus?"></textarea>
+          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+            <button class="btn-primary" id="sendBtn" onclick="sendQuery()">Consultar</button>
+            <button class="btn-ghost" onclick="clearConversation()" id="clearBtn" style="display:none">Nueva conv.</button>
+          </div>
+        </div>
+      </div>
+      <div class="response-area" id="responseArea">
+        <div id="conversationThread"></div>
+        <div id="responseLabel" class="response-label" style="display:none"></div>
+        <div class="response-text" id="responseText"></div>
+      </div>
+    </div>
+    <div>
+      <div class="about-box">
+        <strong>Cómo usar el monitor</strong><br><br>
+        Seleccione un contexto editorial o escriba directamente. El asistente combina el conocimiento de Claude con los datos de ~75 revistas jurídicas colombianas.<br><br>
+        <strong>Ctrl+Enter</strong> para enviar. Para datos muy recientes, verifique en los portales OJS.
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </div><!-- /main -->
-<footer>Revistas Jurídicas Colombianas · Herramienta editorial LEGEM · Universidad del Atlántico · v3.3 · Datos Scopus 2024 · WoS MJL 2025 · Impulsado por Claude (Anthropic)</footer>
+<footer>Revistas Jurídicas Colombianas · Herramienta editorial LEGEM · Universidad del Atlántico · v4.0 · Datos Scopus 2024 · WoS MJL 2025 · Impulsado por Claude (Anthropic)</footer>
 
 <script>
 // ══════════════════════════════════════════════════
@@ -583,82 +636,109 @@ const JOURNALS = [
     scopus:true, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho público", "Contratación estatal", "Derecho constitucional"], dept:'Atlántico', ciudad:'Barranquilla',
     issn:'1692-3030 / 2389-7716', nota:'Q1 Scopus · SJR 0.717 · ESCI WoS · Publindex B · eval. 2022 · Región Caribe',
-    sires:['Scopus','WoS-ESCI','Latindex-Catálogo','Redalyc','DOAJ','Dialnet','REDIB','EBSCOhost'],
-    feed:'https://revistas.ucosta.edu.co/index.php/Juridicas-CUC/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.ucosta.edu.co/index.php/Juridicas-CUC' },
+    sires:['Scopus','WoS-ESCI','Publindex','JCR-Clarivate','SJR-Scimago','Latindex-Catálogo','Redalyc','DOAJ','Dialnet','REDIB','EBSCOhost','Fuente Académica','Cengage Learning','ProQuest','MIAR','CIRC','Dimensions','Scilit','HeinOnline','vLex','SSRN','ERIH Plus','SciELO','Ulrichsweb','Journal TOCs','LatinREV','BASE','Google Scholar','Research4Life','REDICUC'],
+    freq:'Semestral',
+    fundacion:2005, doi:'10.17981/juridcuc', licencia:'CC BY-NC-ND 4.0', idiomas:'ES, EN, PT', acceso:'abierto', 
+    feed:'https://revistascientificas.cuc.edu.co/juridicascuc/gateway/plugin/WebFeedPlugin/atom', url:'https://revistascientificas.cuc.edu.co/juridicascuc' },
   { id:'revistaderechodele', name:'Revista Derecho Del Estado', uni:'Universidad Externado De Colombia',
     publindex:'B', anio_eval:2022, sjr:0.357, scopusQ:'q2', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho constitucional", "Derecho administrativo", "Derecho internacional público"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0122-9893 / 2346-2051', nota:'Q2 Scopus · SJR 0.357 · Publindex B · eval. 2022',
-    sires:['Scopus','Latindex-Catálogo','Redalyc','DOAJ','Dialnet','REDIB','HeinOnline'],
+    sires:['Scopus','Publindex','SciELO','Redalyc','Latindex','Philosophers Index','Fuente Académica','Cengage Learning','ProQuest','DOAJ','REDIB','Dialnet','SSRN','MIAR','CIRC','HeinOnline'],
+    freq:'Semestral',
+    fundacion:1997, doi:'10.18601/01229893', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN, PT', acceso:'abierto',
     feed:'https://revistas.uexternado.edu.co/index.php/derest/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uexternado.edu.co/index.php/derest' },
   { id:'viainveniendietiud', name:'Via Inveniendi Et Iudicandi Revista Virtual', uni:'Universidad Santo Tomas',
     publindex:'C', anio_eval:2022, sjr:0.299, scopusQ:'q2', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Filosofía del derecho", "Teoría jurídica", "Derecho natural"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'1909-0528 / 1909-0528', nota:'Q2 Scopus · SJR 0.299 · Publindex C · eval. 2022',
-    sires:['Scopus','Latindex-Catálogo','Redalyc','DOAJ','Dialnet'],
+    sires:['Scopus','Publindex','Fuente Académica','ProQuest','Dialnet','DOAJ','vLex','Latindex','REDIB','Redalyc','MIAR','CIRC','Sociology Source Ultimate'],
+    freq:'Semestral',
+    fundacion:2005, doi:'10.15332/19090528', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:'https://revistas.usantotomas.edu.co/index.php/viei/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.usantotomas.edu.co/index.php/viei' },
   { id:'dikaionlojusto', name:'Dikaion - Lo Justo', uni:'Universidad De La Sabana',
     publindex:'C', anio_eval:2021, sjr:0.173, scopusQ:'q3', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Filosofía del derecho", "Ética jurídica"], dept:'Cundinamarca', ciudad:'Chía',
     issn:'0120-8942 / 2027-5366', nota:'Q3 Scopus · SJR 0.173 · Publindex C · eval. 2021',
+    sires:['Scopus', 'Publindex', 'MIAR', 'DOAJ', 'Dialnet', 'EBSCOhost', 'Fuente Académica', 'ProQuest', 'Latin America & Iberia (ProQuest)', 'Social Science Premium (ProQuest)', 'Criminal Justice Abstracts (EBSCO)', 'Criminology Collection (ProQuest)', 'vLex', 'SJR-Scimago', 'Latindex'],
+    fundacion:1992, doi:'10.5294/dika', licencia:'CC BY 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:'https://dikaion.unisabana.edu.co/gateway/plugin/WebFeedPlugin/atom', url:'https://dikaion.unisabana.edu.co' },
   { id:'revistadederechopr', name:'Revista De Derecho Privado', uni:'Universidad Externado De Colombia',
     publindex:'A2', anio_eval:2022, sjr:0.153, scopusQ:'q3', wosCol:'ESCI',
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho privado", "Derecho civil", "Derecho comercial"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0123-4366 / 2346-2442', nota:'Q3 Scopus · SJR 0.153 · ESCI WoS · Publindex A2 · eval. 2022',
-    sires:['Scopus','WoS-ESCI','Latindex-Catálogo','Redalyc','DOAJ','Dialnet','HeinOnline'],
+    sires:['Scopus','WoS-ESCI','Publindex','SciELO','Redalyc','Latindex-Catálogo','EBSCOhost','Cengage Learning','ProQuest','DOAJ','REDIB','Ulrichsweb','Biblat','CLASE','Dialnet','ERIH Plus','IBSS','IPSA','LatinREV','LexBase','MIAR','Periódica','Political Science Complete','Sociological Abstracts','WPSA','Zenodo','HeinOnline','SSRN','ANVUR','LatAm Estudios','The Philosophers Index'],
+    freq:'Semestral',
+    fundacion:1936, doi:'10.18601/01234366', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto', 
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','HeinOnline'],
     feed:'https://revistas.uexternado.edu.co/index.php/derpri/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uexternado.edu.co/index.php/derpri' },
   { id:'vniversitas', name:'Vniversitas', uni:'Pontificia Universidad Javeriana',
     publindex:'C', anio_eval:2022, sjr:0.13, scopusQ:'q4', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho privado", "Derecho civil", "Teoría del derecho"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0041-9060 / 2011-1711', nota:'Q4 Scopus · SJR 0.13 · Publindex C · eval. 2022',
+    sires:['Scopus', 'Publindex', 'SciELO', 'Redalyc', 'CLASE', 'Latindex', 'Dialnet', 'EBSCOhost', 'Fuente Académica', 'ProQuest', 'Sociological Abstracts', 'MIAR'],
+    fundacion:1951, doi:'10.11144/Javeriana.vj', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:'https://revistas.javeriana.edu.co/index.php/vnijuri/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.javeriana.edu.co/index.php/vnijuri' },
   { id:'estudiosdederecho', name:'Estudios De Derecho', uni:'Universidad De Antioquia',
     publindex:'B', anio_eval:2016, sjr:0.122, scopusQ:'q4', wosCol:'ESCI',
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho penal", "Sociología jurídica", "Filosofía del derecho"], dept:'Antioquia', ciudad:'Medellín',
     issn:'0120-1867', nota:'Q4 Scopus · SJR 0.122 · ESCI WoS · Publindex B · eval. 2016',
+    sires:['Scopus','WoS-ESCI','Redalyc','EBSCOhost','ProQuest','vLex','REDIB','Ulrichsweb','DOAJ','Latindex','MIAR','Biblat','CLASE','Dialnet','ERIH Plus','IBSS','IPSA','LatinREV','LexBase','Periódica','Political Science Complete','Sociological Abstracts','WPSA','Zenodo','HeinOnline'],
+    fundacion:1912, doi:'10.17533/udea.esde', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN, FR, PT', acceso:'abierto', 
     feed:'https://revistas.udea.edu.co/index.php/red/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.udea.edu.co/index.php/red' },
   { id:'jurdicas', name:'Jurídicas', uni:'Universidad De Caldas',
     publindex:'B', anio_eval:2022, sjr:0.119, scopusQ:'q4', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho público", "Teoría del derecho"], dept:'Caldas', ciudad:'Manizales',
     issn:'1794-2918', nota:'Q4 Scopus · SJR 0.119 · Publindex B · eval. 2022',
+    sires:['Scopus', 'Publindex', 'Latindex', 'Dialnet', 'CIRC', 'REBIUN', 'MIAR'],
+    fundacion:2004, doi:'10.17151/jurid', licencia:'CC BY 4.0', idiomas:'ES, EN, FR, PT', acceso:'abierto',
     feed:'https://juridicas.ucaldas.edu.co/gateway/plugin/WebFeedPlugin/atom', url:'https://juridicas.ucaldas.edu.co' },
   { id:'nuevoderecho', name:'Nuevo Derecho', uni:'Institucion Universitaria De Envigado',
     publindex:'C', anio_eval:2013, sjr:0.118, scopusQ:'q4', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho público", "Derechos humanos"], dept:'Antioquia', ciudad:'Envigado',
     issn:'2011-4540', nota:'Q4 Scopus · SJR 0.118 · Publindex C · eval. 2013',
+    sires:['Scopus', 'Publindex', 'MIAR', 'Dialnet', 'Latindex', 'DOAJ', 'REDIB'],
+    fundacion:2005, doi:'10.25057/2500672X', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'#' },
   { id:'revistafacultadded', name:'Revista Facultad De Derecho Y Ciencias Políticas', uni:'Universidad Pontificia Bolivariana',
     publindex:'C', anio_eval:2022, sjr:0.113, scopusQ:'q4', wosCol:null,
     scopus:true, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho público", "Ciencias políticas"], dept:'Antioquia', ciudad:'Medellín',
     issn:'0120-3886 / 2390-0016', nota:'Q4 Scopus · SJR 0.113 · Publindex C · eval. 2022',
+    sires:['Scopus', 'Publindex', 'Latindex', 'CLASE', 'Fuente Académica', 'EBSCOhost', 'ProQuest', 'Index Copernicus', 'Ulrichsweb', 'Redalyc', 'Dialnet', 'SciELO Colombia', 'REDIB', 'MIAR', 'GALE', 'DOAJ', 'Dardo', 'OpenAlex', 'Crossref'],
+    fundacion:1937, doi:'10.18566/rfdcp', licencia:'CC BY-NC 4.0', idiomas:'ES', acceso:'abierto',
     feed:'https://revistas.upb.edu.co/index.php/derecho/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.upb.edu.co/index.php/derecho' },
   { id:'internationallawre', name:'International Law : Revista Colombiana De Derecho Internacional', uni:'Pontificia Universidad Javeriana',
     publindex:'A2', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho internacional", "Derecho internacional público"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'1692-8156 / 2011-1703', nota:'Publindex A2 · eval. 2016',
+    sires:['Publindex','SciELO Colombia','Redalyc','Latindex','Dialnet','DOAJ','MIAR','CIRC','REBIUN','HeinOnline'],
+    fundacion:2003, doi:'10.11144/Javeriana.il', licencia:'CC BY 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:null, url:'https://revistas.javeriana.edu.co/index.php/internationallaw' },
   { id:'academiaderecho', name:'Academia & Derecho', uni:'Universidad Libre De Colombia',
     publindex:'B', anio_eval:2022, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho penal", "Derecho procesal"], dept:'Norte de Santander', ciudad:'Cúcuta',
     issn:'2215-8944', nota:'Publindex B · eval. 2022',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','REDIB','CLASE'],
+    fundacion:2010, doi:'10.18041/2215-8944', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:'https://revistas.unilibre.edu.co/index.php/academia/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.unilibre.edu.co/index.php/academia' },
   { id:'advocatus', name:'Advocatus', uni:'Universidad Libre De Colombia',
     publindex:'B', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho público", "Derecho privado"], dept:'Atlántico', ciudad:'Barranquilla',
     issn:'0124-0102 / 2390-0202', nota:'Publindex B · eval. 2016 · Región Caribe',
+    sires:['Publindex','EBSCOhost','REDIB','Biblat','DOAJ','MIAR','CLASE','vLex','Digitalia','Dialnet','Latindex','CIRC','REBIUN'],
+    fundacion:1995, doi:'10.18041/0124-0102', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.unilibre.edu.co/index.php/advocatus' },
   { id:'cs', name:'Cs', uni:'Universidad Icesi',
     publindex:'B', anio_eval:2020, sjr:null, scopusQ:null, wosCol:null,
@@ -671,12 +751,16 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho penal", "Criminología", "Política criminal"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0121-0483', nota:'ESCI WoS · Publindex B · eval. 2013',
+    sires:['WoS-ESCI','Latindex','EBSCOhost','Cengage Learning','ProQuest','CLASE','LatAm Estudios','SSRN','Dialnet','DOAJ','HeinOnline'],
+    fundacion:1977, doi:'10.18601/01210483', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto', 
     feed:'https://revistas.uexternado.edu.co/index.php/derpen/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uexternado.edu.co/index.php/derpen' },
   { id:'justiciajuris', name:'Justicia Juris', uni:'Universidad Autonoma Del Caribe',
     publindex:'B', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho procesal", "Derechos humanos"], dept:'Atlántico', ciudad:'Barranquilla',
     issn:'1692-8571', nota:'Publindex B · eval. 2016 · Región Caribe',
+    sires:['Publindex','SciELO Colombia','EBSCOhost','Dialnet','Latindex','DOAJ','MIAR','REDIB','CIRC','REBIUN'],
+    fundacion:2003, doi:'10.15665/rj', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:'https://revistas.uac.edu.co/index.php/justiciaJuris/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uac.edu.co/index.php/justiciaJuris' },
   { id:'revistadederechoprx', name:'Revista De Derecho Privado', uni:'Universidad De Los Andes',
     publindex:'B', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
@@ -689,6 +773,7 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'1909-7778', nota:'Publindex B · eval. 2016',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR'],
     feed:null, url:'#' },
   { id:'revistadederechoco', name:'Revista De Derecho, Comunicaciones Y Nuevas Tecnologias', uni:'Universidad De Los Andes',
     publindex:'B', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
@@ -713,12 +798,16 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho comercial", "Propiedad intelectual"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'1692-3960', nota:'ESCI WoS · Publindex B · eval. 2016',
+    sires:['WoS-ESCI','DOAJ','HeinOnline','vLex','Dialnet','EBSCOhost','MIAR','LatAm Estudios','Biblat','CLASE','ERIH Plus'],
+    fundacion:2002, doi:'10.18601/16923960', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto', 
     feed:'https://revistas.uexternado.edu.co/index.php/emerca/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uexternado.edu.co/index.php/emerca' },
   { id:'sabercienciayliber', name:'Saber, Ciencia Y Libertad', uni:'Universidad Libre De Colombia',
     publindex:'B', anio_eval:2020, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho público", "Ciencias sociales"], dept:'Bolívar', ciudad:'Cartagena de Indias',
     issn:'1794-7154', nota:'Publindex B · eval. 2020 · Región Caribe',
+    sires:['Publindex','CLASE','Dialnet','DOAJ','EBSCOhost','Latindex','Redalyc','REDIB','Actualidad Iberoamericana','BASE','ERIH Plus','Google Scholar','MIAR','REBIUN','Sapiens Research','vLex'],
+    fundacion:2006, doi:'10.18041/2382-3240', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.unilibre.edu.co/index.php/saber' },
   { id:'ambientejurdico', name:'Ambiente Jurídico', uni:'Universidad De Manizales Umanizales',
     publindex:'C', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
@@ -731,12 +820,16 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'2145-3381', nota:'Publindex C · eval. 2016 · URL verificada v2.9',
+    sires:['Publindex','Latindex','Dialnet','MIAR','DOAJ'],
+    fundacion:2009, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.fuac.edu.co/index.php/criteriojuridicogarantista' },
   { id:'criteriojurdico', name:'Criterio Jurídico', uni:'Pontificia Universidad Javeriana',
     publindex:'C', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho"], dept:'Valle del Cauca', ciudad:'Cali',
     issn:'1657-3978', nota:'Publindex C · eval. 2016',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','MIAR','DOAJ','CIRC','REBIUN'],
+    fundacion:2001, doi:'10.18046/j.criteriojuridico', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:null, url:'#' },
   { id:'criteriolibrejurdi', name:'Criterio Libre Jurídico', uni:'Pontificia Universidad Javeriana',
     publindex:'C', anio_eval:2020, sjr:null, scopusQ:null, wosCol:null,
@@ -749,6 +842,8 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho público", "Derechos humanos"], dept:'Santander', ciudad:'Bucaramanga',
     issn:'0124-7255', nota:'ESCI WoS · Publindex C · eval. 2016',
+    sires:['WoS-ESCI','MIAR','vLex','Actualidad Iberoamericana','DOAJ','Latindex','Dialnet','Sherpa Romeo','EBSCOhost','OAJI','DRJI','Redalyc','Dimensions','Dardo','REDIB','AURA','ORCID','Crossref'],
+    fundacion:1999, doi:'10.16925/di', licencia:'CC BY 4.0', idiomas:'ES, EN', acceso:'abierto', 
     feed:'https://revistas.ucc.edu.co/index.php/dixi/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.ucc.edu.co/index.php/dixi' },
   { id:'dilogosdesaberes', name:'Diálogos De Saberes', uni:'Universidad Libre De Colombia',
     publindex:'C', anio_eval:2018, sjr:null, scopusQ:null, wosCol:null,
@@ -761,12 +856,16 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho internacional", "Derecho internacional público"], dept:'Antioquia', ciudad:'Medellín',
     issn:'2216-0965', nota:'Publindex C · eval. 2016',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','HeinOnline'],
+    fundacion:2008, doi:'10.17230/ejil', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:null, url:'https://revistas.eafit.edu.co/index.php/jil' },
   { id:'estudiossociojurdi', name:'Estudios Socio-Jurídicos', uni:'Colegio Mayor Nuestra Senora Del Rosario',
     publindex:'C', anio_eval:2022, sjr:null, scopusQ:null, wosCol:'ESCI',
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Sociología jurídica", "Derechos humanos", "Derecho constitucional"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0124-0579 / 2145-4531', nota:'ESCI WoS · Publindex C · eval. 2022',
+    sires:['WoS-ESCI','Publindex','SciELO Citation Index','SciELO Colombia','Redalyc','ERIH Plus','CLASE','Dialnet','DOAJ','EZB','Fuente Académica','vLex','BASE','MIAR','Journal Scholar Metrics','CIRC','Latindex','REBIUN','Worldcat','Dimensions','Scilit','Journal TOCs','LatinREV','ResearchBIB','Biblat'],
+    fundacion:1999, doi:'10.12804', licencia:'CC BY-NC 4.0', idiomas:'ES, EN, PT', acceso:'abierto', 
     feed:'https://revistas.urosario.edu.co/index.php/sociojuridicos/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.urosario.edu.co/index.php/sociojuridicos' },
   { id:'holsticajurdica', name:'Holística Jurídica', uni:'Universidad De San Buenaventura Cali',
     publindex:'C', anio_eval:2012, sjr:null, scopusQ:null, wosCol:null,
@@ -793,11 +892,14 @@ const JOURNALS = [
     issn:'1692-9403', nota:'Publindex C · eval. 2016',
     feed:null, url:'#' },
   { id:'justicia', name:'Justicia', uni:'Universidad Simon Bolivar',
-    publindex:'C', anio_eval:2022, sjr:null, scopusQ:null, wosCol:'ESCI',
-    scopus:false, latindex:true, caribe:true, legem:false, active:true, status:'activa',
+    publindex:'C', anio_eval:2022, sjr:0.17, scopusQ:'q3', wosCol:'ESCI',
+    scopus:true, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho procesal", "Derecho constitucional"], dept:'Atlántico', ciudad:'Barranquilla',
     issn:'0124-7441 / 2590-4566', nota:'ESCI WoS · Publindex C · eval. 2022 · Región Caribe',
-    sires:['WoS-ESCI','Latindex-Catálogo','Redalyc','DOAJ','Dialnet','REDIB'],
+    sires:['Scopus','WoS-ESCI','Publindex','SciELO','Dialnet','DOAJ','EBSCOhost','Google Scholar','Latindex','MIAR','REDIB','CIRC','LatinREV','CLASE','ORCID','Impactstory'],
+    freq:'Semestral',
+    sires:['Scopus','WoS-ESCI','Publindex','SciELO','Dialnet','DOAJ','EBSCOhost','Google Scholar','Latindex','MIAR','REDIB','CIRC','LatinREV','CLASE','ORCID','Impactstory'],
+    fundacion:1996, doi:'10.17081/just', licencia:'CC BY 4.0', idiomas:'ES, EN', acceso:'abierto', 
     feed:'https://revistas.unisimon.edu.co/index.php/justicia/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.unisimon.edu.co/index.php/justicia' },
   { id:'misionjuridica', name:'Mision Juridica', uni:'Universidad Colegio Mayor De Cundinamarca',
     publindex:'C', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
@@ -810,18 +912,24 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho penal", "Criminología"], dept:'Antioquia', ciudad:'Medellín',
     issn:'0120-8179 / 2539-4991', nota:'Publindex C · eval. 2022',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','HeinOnline','CLASE'],
+    fundacion:1978, doi:'10.17230/nfp', licencia:'CC BY 4.0', idiomas:'ES, EN, DE', acceso:'abierto',
     feed:'https://revistas.eafit.edu.co/index.php/newforumpenal/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.eafit.edu.co/index.php/newforumpenal' },
   { id:'opininjurdica', name:'Opinión Jurídica', uni:'Universidad De Medellin',
     publindex:'C', anio_eval:2022, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Teoría del derecho", "Derechos humanos"], dept:'Antioquia', ciudad:'Medellín',
     issn:'1692-2530 / 2248-4078', nota:'Publindex C · eval. 2022',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','CLASE','REDIB'],
+    fundacion:2002, doi:'10.22395/ojum', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:'https://revistas.udem.edu.co/index.php/opinion/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.udem.edu.co/index.php/opinion' },
   { id:'pensamientojurdico', name:'Pensamiento Jurídico', uni:'Universidad Nacional De Colombia',
     publindex:'C', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Filosofía del derecho", "Teoría jurídica"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0122-1108', nota:'Publindex C · eval. 2016',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','CLASE'],
+    fundacion:1994, doi:'10.15446/pensamientojuridico', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:'https://revistas.unal.edu.co/index.php/peju/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.unal.edu.co/index.php/peju' },
   { id:'pensamientoypoder', name:'Pensamiento Y Poder', uni:'Corporacion Universitaria Remington',
     publindex:'C', anio_eval:2013, sjr:null, scopusQ:null, wosCol:null,
@@ -834,7 +942,9 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Jurisprudencia", "Derecho constitucional"], dept:'No disponible', ciudad:'No disponible',
     issn:'1657-6535', nota:'ESCI WoS · Publindex C · eval. 2016',
-    feed:'https://revistas.icesi.edu.co/index.php/precedente/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.icesi.edu.co/index.php/precedente' },
+    sires:['WoS-ESCI','REDIB','ERIH Plus','DOAJ','MIAR','vLex','Biblat','Dialnet','Google Scholar','Sherpa Romeo'],
+    fundacion:2002, doi:'10.18046/prec', licencia:'CC BY-NC 4.0', idiomas:'ES', acceso:'abierto', 
+    feed:'https://www.icesi.edu.co/revistas/index.php/precedente/gateway/plugin/WebFeedPlugin/atom', url:'https://www.icesi.edu.co/revistas/index.php/precedente' },
   { id:'principiaiuris', name:'Principia Iuris', uni:'Universidad Santo Tomas',
     publindex:'C', anio_eval:2018, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
@@ -846,18 +956,24 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derechos humanos", "Derecho público"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'0121-182X / 1909-7727', nota:'ESCI WoS · Publindex C · eval. 2022',
+    sires:['WoS-ESCI','Publindex','SciELO Colombia','Redalyc','Biblat','DOAJ','Dialnet','CLASE','ProQuest','Latindex','Sapiens Research','Google Scholar'],
+    fundacion:1998, doi:'10.18359/prole', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto', 
     feed:'https://revistas.unimilitar.edu.co/index.php/dere/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.unimilitar.edu.co/index.php/dere' },
   { id:'ratiojuris', name:'Ratio Juris', uni:'Universidad Autonoma Latinoamericana Unaula',
     publindex:'C', anio_eval:2022, sjr:null, scopusQ:null, wosCol:'ESCI',
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Filosofía del derecho", "Teoría jurídica"], dept:'Antioquia', ciudad:'Medellín',
     issn:'1794-6638 / 2619-4066', nota:'ESCI WoS · Publindex C · eval. 2022',
+    sires:['WoS-ESCI','Publindex','Redalyc','DOAJ','EBSCOhost','MIAR','REDIB','Dialnet','BASE','AmeliCA','EZB','OAJI','LivRe','Dardo','vLex','Semantic Scholar','Biblat','LatinREV','LatAm Estudios','CRUE','NSD-Publiseringskanaler','OpenAIRE','Connected Papers','Crossref','Dimensions','Gateway Bayern','DEYCRIT'],
+    fundacion:2006, doi:'10.24142/raju', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN, PT', acceso:'abierto', 
     feed:'https://publicaciones.unaula.edu.co/index.php/ratiojuris/gateway/plugin/WebFeedPlugin/atom', url:'https://publicaciones.unaula.edu.co/index.php/ratiojuris' },
   { id:'revistacesderecho', name:'Revista Ces Derecho', uni:'Universidad Ces',
     publindex:'C', anio_eval:2022, sjr:null, scopusQ:null, wosCol:'ESCI',
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho de la salud", "Bioética jurídica"], dept:'Antioquia', ciudad:'Medellín',
     issn:'2145-7719 / 2145-7719', nota:'ESCI WoS · Publindex C · eval. 2022',
+    sires:['WoS-ESCI','Publindex','Latindex','CIRC','REDIB','Sapiens Research','SciELO','Dialnet','vLex','EBSCOhost','ProQuest','ZDB','GALE','Europresse','Scilit','Paperity','Eureka.cc','Journals for Free','Google Scholar','EZB','Crossref','BASE','Worldcat','Internet Archive','McGill Library','Georgetown University Library','Biblioteca UMU','Universidad Sevilla Biblioteca','SUDOC','ORES','OpenAlex','Researcher.Life','REBIUN','MIAR'],
+    fundacion:2010, doi:'10.21615/cesder', licencia:'CC BY-NC-ND 4.0', idiomas:'ES, EN', acceso:'abierto', 
     feed:'https://revistas.ces.edu.co/index.php/derecho/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.ces.edu.co/index.php/derecho' },
   { id:'revistacriterios', name:'Revista Criterios', uni:'Universidad De San Buenaventura Cali',
     publindex:'C', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
@@ -870,6 +986,8 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho"], dept:'Atlántico', ciudad:'Barranquilla',
     issn:'0121-8697 / 2145-9355', nota:'Publindex C · eval. 2021 · Región Caribe',
+    sires:['Publindex','Redalyc','EBSCOhost','ProQuest','Dialnet','DOAJ','ERIH Plus','vLex','Latindex','MIAR','CIRC','REBIUN'],
+    fundacion:1990, doi:'10.14482/dere', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:null, url:'https://rcientificas.uninorte.edu.co/index.php/derecho' },
   { id:'revistaderprivandes2004', name:'Revista De Derecho Privado', uni:'Universidad De Los Andes',
     publindex:'C', anio_eval:2004, sjr:null, scopusQ:null, wosCol:null,
@@ -882,6 +1000,8 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho administrativo", "Contratación estatal"], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'2145-2946', nota:'ESCI WoS · Publindex C · eval. 2016',
+    sires:['WoS-ESCI','Latindex-Catálogo','Cengage Learning','EBSCOhost','LatAm Estudios','HeinOnline','DOAJ','CLASE','SSRN','Dialnet','Cabells','REDIB','Redalyc'],
+    fundacion:2009, doi:'10.18601/21452946', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN, FR', acceso:'abierto', 
     feed:'https://revistas.uexternado.edu.co/index.php/Deradm/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uexternado.edu.co/index.php/Deradm' },
   { id:'revistainstitutoco', name:'Revista Instituto Colombiano De Derecho Tributario - Icdt', uni:'Instituto Colombiano De Derecho Tributario',
     publindex:'C', anio_eval:2013, sjr:null, scopusQ:null, wosCol:null,
@@ -900,12 +1020,15 @@ const JOURNALS = [
     scopus:false, latindex:true, caribe:true, legem:false, active:true, status:'activa',
     area:["Derecho público", "Derecho privado"], dept:'Bolívar', ciudad:'Cartagena de Indias',
     issn:'2145-6054 / 2256-2796', nota:'Publindex C · eval. 2022 · Región Caribe',
+    sires:['Publindex','DOAJ','MIAR','Dialnet','Latindex','LatinREV'],
+    fundacion:2009, doi:'10.32997/2256-2796', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:null, url:'https://revistas.unicartagena.edu.co/index.php/marioalario' },
   { id:'revistajurdicapila', name:'Revista Jurídica Piélagus', uni:'Universidad Surcolombiana',
     publindex:'C', anio_eval:2016, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:true, caribe:false, legem:false, active:true, status:'activa',
     area:["Derecho"], dept:'Huila', ciudad:'Neiva',
     issn:'1657-6799', nota:'Publindex C · eval. 2016',
+    sires:['Publindex','Latindex','Dialnet','DOAJ','MIAR'],
     feed:null, url:'#' },
   { id:'revistaviaiuris', name:'Revista Via Iuris', uni:'Fundacion Universitaria Los Libertadores',
     publindex:'C', anio_eval:2020, sjr:null, scopusQ:null, wosCol:null,
@@ -931,6 +1054,8 @@ const JOURNALS = [
     scopus:false, latindex:false, caribe:false, legem:false, active:true, status:'activa',
     area:['Sociología jurídica','Derecho y ciencias sociales'], dept:'Córdoba', ciudad:'Montería',
     issn:'—', nota:'Sin Publindex · Perfil sociojurídico · Interdisciplinariedad alta',
+    sires:['Publindex','Latindex','DOAJ','MIAR','Dialnet'],
+    fundacion:2016, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.unicordoba.edu.co/index.php/dersoc' },
   { id:'amazoniaAlDerecho', name:'Amazonia al Derecho', uni:'Universidad de la Amazonia',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
@@ -955,12 +1080,16 @@ const JOURNALS = [
     scopus:false, latindex:false, caribe:true, legem:false, active:true, status:'activa',
     area:['Derecho'], dept:'Sucre', ciudad:'Sincelejo',
     issn:'—', nota:'Sin Publindex · Predominantemente jurídica · Región Caribe',
+    sires:['Publindex','Latindex','DOAJ','MIAR','Dialnet'],
+    fundacion:2009, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.unisucre.edu.co/index.php/veritas' },
   { id:'saberesjuridicos', name:'Saberes Jurídicos', uni:'Universidad del Magdalena',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:false, caribe:true, legem:false, active:true, status:'activa',
     area:['Derecho'], dept:'Magdalena', ciudad:'Santa Marta',
     issn:'—', nota:'Sin Publindex · Predominantemente jurídica · Región Caribe',
+    sires:['Publindex','Latindex','DOAJ','MIAR'],
+    fundacion:2021, doi:'', licencia:'CC BY 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.unimagdalena.edu.co/index.php/saberesjuridicos' },
   { id:'postuladossociojur', name:'Postulados: Revista Sociojurídica', uni:'Universidad Francisco de Paula Santander',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
@@ -979,18 +1108,24 @@ const JOURNALS = [
     scopus:false, latindex:false, caribe:true, legem:false, active:true, status:'activa',
     area:['Derecho'], dept:'Bolívar', ciudad:'Cartagena de Indias',
     issn:'—', nota:'Sin Publindex · Institución universitaria · Región Caribe',
+    sires:['Publindex','REDIB','Latindex','DOAJ','MIAR'],
+    fundacion:2009, doi:'10.22519/22157379', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.uninunez.edu.co/index.php/ergaomnes' },
   { id:'analisisinternacio', name:'Revista Análisis Internacional', uni:'Universidad de Bogotá Jorge Tadeo Lozano',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:false, caribe:false, legem:false, active:true, status:'activa',
     area:['Derecho internacional','Relaciones internacionales'], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'—', nota:'Sin Publindex · Perfil interdisciplinario con componente jurídico',
+    sires:['Publindex','Redalyc','Latindex','Dialnet','DOAJ','MIAR','REDIB'],
+    fundacion:2009, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES, EN', acceso:'abierto',
     feed:null, url:'https://www.utadeo.edu.co/es/publicacion/revista/publicaciones/235/revista-analisis-internacional' },
   { id:'escenariossojiur', name:'Revista Escenarios Sociojurídicos', uni:'Universidad Antonio Nariño',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
     scopus:false, latindex:false, caribe:false, legem:false, active:true, status:'activa',
     area:['Sociología jurídica','Derecho y ciencias sociales'], dept:'Bogotá, D. C.', ciudad:'Bogotá, D.C.',
     issn:'—', nota:'Sin Publindex · Perfil sociojurídico',
+    sires:['Publindex','Latindex','DOAJ','MIAR'],
+    fundacion:2013, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://revistas.uan.edu.co/index.php/escenariossociojuridicos/' },
   { id:'summaiuris', name:'Summa Iuris', uni:'Universidad Católica Luis Amigó',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
@@ -1021,6 +1156,8 @@ const JOURNALS = [
     scopus:false, latindex:false, caribe:true, legem:false, active:true, status:'activa',
     area:['Derecho'], dept:'Córdoba', ciudad:'Montería',
     issn:'—', nota:'Sin Publindex · Predominantemente jurídica · Región Caribe',
+    sires:['Publindex','Latindex','DOAJ','MIAR'],
+    fundacion:2006, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto',
     feed:null, url:'https://www.revistavisionjuridica.unisinu.edu.co/' },
   { id:'inciso', name:'Inciso', uni:'Universidad La Gran Colombia',
     publindex:'nd', anio_eval:null, sjr:null, scopusQ:null, wosCol:null,
@@ -1035,7 +1172,9 @@ const JOURNALS = [
     area:['Derecho público','Derecho privado','Derecho del Caribe','Derecho administrativo'],
     dept:'Atlántico', ciudad:'Barranquilla',
     issn:'—', nota:'Tu revista · Sin categoría Publindex aún · Región Caribe',
-    sires:['Latindex-Catálogo'],
+    sires:['LatinREV','REDIB','EuroPub','DRJI','Dialnet','MIAR','Google Scholar'],
+    freq:'Semestral',
+    fundacion:2014, doi:'', licencia:'CC BY-NC-SA 4.0', idiomas:'ES', acceso:'abierto', 
     feed:'https://revistas.uniatlantico.edu.co/index.php/legin/gateway/plugin/WebFeedPlugin/atom', url:'https://revistas.uniatlantico.edu.co/index.php/legin' },
 ];
 // ══════════════════════════════════════════════════
@@ -1067,11 +1206,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   renderStatsBar();
   renderDashboard();
-  renderActiveJournalsList();
-  renderJournalsGrid();
-  renderPortalsList();
   renderMatriz();
   renderBibliotecaDir();
+  renderIndexaciones();
+  renderLegemPanel();
 });
 
 // ══════════════════════════════════════════════════
@@ -1145,7 +1283,6 @@ function runDashSearch(){
   const results = active.filter(j=>
     j.name.toLowerCase().includes(q) ||
     j.uni.toLowerCase().includes(q) ||
-    (j.area&&j.area.some(a=>a.toLowerCase().includes(q))) ||
     (j.issn&&j.issn.includes(q)) ||
     (j.nota&&j.nota.toLowerCase().includes(q))
   ).slice(0,6);
@@ -1319,15 +1456,8 @@ function renderMatriz(){
       <td>${j.sjr!==null?`<span class="metric-val">${j.sjr.toFixed(3)}</span>`:'<span class="metric-na">—</span>'}</td>
       <td>${j.scopusQ?`<span class="tag ${j.scopusQ}">${j.scopusQ.toUpperCase()}</span>`:j.scopus?'<span class="metric-na">Scopus*</span>':'<span class="metric-na">—</span>'}</td>
       <td>${j.wosCol?`<span class="tag esci">${j.wosCol}</span>`:'<span class="metric-na">—</span>'}</td>
-      <td>
-        <div class="source-dots">
-          <span class="sdot ${j.scopus?'yes':''}">Scopus</span>
-          <span class="sdot ${j.wosCol?'yes':''}">WoS</span>
-          <span class="sdot ${j.latindex?'yes':''}">Latindex</span>
-          ${j.sires?j.sires.filter(s=>!['Scopus','WoS-ESCI','Latindex-Catálogo'].includes(s)).map(s=>`<span class="sdot yes">${s}</span>`).join(''):''}
-        </div>
-      </td>
-      <td><span class="metric-val" style="font-size:.68rem">${j.freq||'—'}</span></td>
+
+
       <td>${j.url&&j.url!=='#'?`<a href="${j.url}" target="_blank" style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent);text-decoration:none">OJS ↗</a>`:'<span class="metric-na">—</span>'}</td>
     </tr>
   `).join('');
@@ -1339,120 +1469,6 @@ function sortMatriz(col){
 function resetFiltros(){
   ['filterCat','filterScopus','filterWos','filterCaribe'].forEach(id=>document.getElementById(id).value='');
   renderMatriz();
-}
-
-// ══════════════════════════════════════════════════
-// BUSCADOR
-// ══════════════════════════════════════════════════
-function runSearch(){
-  const q=document.getElementById('searchInput').value.trim().toLowerCase();
-  const filter=document.getElementById('searchFilter').value;
-  const container=document.getElementById('searchResults');
-  if(q.length<2){container.innerHTML='<div class="no-results">Escriba al menos 2 caracteres para buscar.</div>';return;}
-
-  const results=[];
-  JOURNALS.forEach(j=>{
-    let match=false,reason='';
-    if(filter==='caribe'){if(j.caribe){match=true;reason='región Caribe';}}
-    else{
-      if(!filter||filter==='revista'){
-        if(j.name.toLowerCase().includes(q)||j.uni.toLowerCase().includes(q)){match=true;reason='revista';}
-      }
-      if(!filter||filter==='fuente'){
-        const f=[j.scopus&&'Scopus',j.wosCol,j.latindex&&'Latindex',
-          j.publindex&&`Publindex ${j.publindex.toUpperCase()}`,
-          j.scopusQ&&`Q${j.scopusQ.replace('q','')} Scopus`].filter(Boolean).join(' ');
-        if(f.toLowerCase().includes(q)){match=true;reason=reason||'fuente/índice';}
-      }
-      if(!filter||filter==='area'){
-        if(j.area&&j.area.some(a=>a.toLowerCase().includes(q))){match=true;reason=reason||'área temática';}
-      }
-      if(j.nota&&j.nota.toLowerCase().includes(q)){match=true;reason=reason||'indicador';}
-      if(j.issn&&j.issn.toLowerCase().includes(q)){match=true;reason=reason||'ISSN';}
-    }
-    if(match)results.push({...j,reason});
-  });
-
-  if(!results.length){container.innerHTML=`<div class="no-results">Sin resultados para "<strong>${q}</strong>".</div>`;return;}
-
-  container.innerHTML=results.map(r=>`
-    <div class="search-result-item">
-      <div class="sr-type">Revista · coincidencia en ${r.reason}</div>
-      <div class="sr-title">${r.legem?'★ ':r.caribe?'◆ ':''}${r.name}</div>
-      <div class="sr-meta">${r.uni}${r.caribe?' · <strong>Región Caribe</strong>':''}</div>
-      <div class="sr-tags">
-        ${r.publindex&&r.publindex!=='nd'?`<span class="tag ${r.publindex}">${r.publindex.toUpperCase()}</span>`:''}
-        ${r.scopusQ?`<span class="tag ${r.scopusQ}">${r.scopusQ.toUpperCase()} Scopus</span>`:''}
-        ${r.wosCol?`<span class="tag esci">${r.wosCol} WoS</span>`:''}
-        ${r.sjr?`<span class="tag">SJR ${r.sjr.toFixed(3)}</span>`:''}
-        ${r.area?r.area.slice(0,2).map(a=>`<span class="tag">${a}</span>`).join(''):''}
-        ${r.url&&r.url!=='#'?`<a href="${r.url}" target="_blank" style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent);text-decoration:none;margin-left:4px">OJS ↗</a>`:''}
-      </div>
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════════════
-// CONFIGURAR
-// ══════════════════════════════════════════════════
-function renderJournalsGrid(){
-  document.getElementById('journalsGrid').innerHTML=JOURNALS.filter(j=>j.status==='activa').map(j=>`
-    <div class="journal-card" style="${j.caribe&&!j.legem?'border-left:3px solid #1a3a5c':j.legem?'border-left:3px solid var(--accent)':''}">
-      <input type="checkbox" class="journal-toggle" ${selectedJournals.has(j.id)?'checked':''} onchange="toggleJournal('${j.id}')">
-      <div class="journal-info">
-        <div class="journal-name">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}</div>
-        <div class="journal-uni">${j.uni}</div>
-        <div class="journal-tags">
-          ${j.publindex&&j.publindex!=='nd'?`<span class="tag ${j.publindex}">${j.publindex.toUpperCase()}</span>`:''}
-          ${j.scopusQ?`<span class="tag ${j.scopusQ}">${j.scopusQ.toUpperCase()}</span>`:''}
-          ${j.wosCol?`<span class="tag esci">${j.wosCol}</span>`:''}
-          ${j.legem?`<span class="tag legem">Tu revista</span>`:''}
-          ${j.caribe&&!j.legem?`<span class="caribe-badge">Caribe</span>`:''}
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderActiveJournalsList(){
-  const list=document.getElementById('activeJournalsList');
-  const active=JOURNALS.filter(j=>selectedJournals.has(j.id) && j.status==='activa');
-  if(!active.length){list.innerHTML='<li style="font-size:.78rem;color:var(--muted);font-style:italic;padding:7px 0">Ninguna seleccionada.</li>';return;}
-  list.innerHTML=active.map(j=>`
-    <li>
-      <span class="resource-num">${j.scopusQ?j.scopusQ.toUpperCase():j.publindex&&j.publindex!=='nd'?j.publindex.toUpperCase():j.wosCol||'—'}</span>
-      <div>
-        <div style="font-size:.78rem;font-weight:600">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}</div>
-        <div class="resource-desc">${j.uni}</div>
-      </div>
-    </li>
-  `).join('');
-}
-
-function renderPortalsList(){
-  document.getElementById('portalsList').innerHTML=JOURNALS
-    .filter(j=>j.url&&j.url!=='#'&&j.status==='activa')
-    .slice(0,14)
-    .map((j,i)=>`
-      <li>
-        <span class="resource-num">${String(i+1).padStart(2,'0')}</span>
-        <div>
-          <a href="${j.url}" target="_blank">${j.name}</a>
-          <div class="resource-desc">${j.uni}</div>
-        </div>
-      </li>
-    `).join('');
-}
-
-function toggleJournal(id){selectedJournals.has(id)?selectedJournals.delete(id):selectedJournals.add(id);}
-function selectAll(){selectedJournals=new Set(JOURNALS.map(j=>j.id));renderJournalsGrid();}
-function selectNone(){selectedJournals=new Set();renderJournalsGrid();}
-function saveConfig(){
-  renderActiveJournalsList();
-  renderBibliotecaDir();
-  const m=document.getElementById('saveMsg');
-  m.style.display='block';
-  setTimeout(()=>m.style.display='none',2500);
 }
 
 // ══════════════════════════════════════════════════
@@ -1589,8 +1605,7 @@ function renderBibliotecaDir(){
     data = data.filter(j=>
       j.name.toLowerCase().includes(q) ||
       j.uni.toLowerCase().includes(q) ||
-      (j.area&&j.area.some(a=>a.toLowerCase().includes(q))) ||
-      (j.nota&&j.nota.toLowerCase().includes(q)) ||
+        (j.nota&&j.nota.toLowerCase().includes(q)) ||
       (j.issn&&j.issn.includes(q)) ||
       (j.ciudad&&j.ciudad.toLowerCase().includes(q)) ||
       (j.dept&&j.dept.toLowerCase().includes(q)) ||
@@ -1625,10 +1640,6 @@ function renderBibliotecaDir(){
       ? j.sires.map(s=>`<span class="tag">${s}</span>`).join('')
       : '<span style="font-size:.7rem;color:var(--muted);font-style:italic">No registrados aún</span>';
 
-    const areasHtml = j.area?.length
-      ? j.area.join(' · ')
-      : '—';
-
     const linksHtml = [
       j.url&&j.url!=='#' ? `<a href="${j.url}" target="_blank" class="bib-dir-link primary">Ver portal OJS ↗</a>` : '',
       j.feed ? `<a href="${j.feed}" target="_blank" class="bib-dir-link">Feed Atom ↗</a>` : '',
@@ -1656,10 +1667,11 @@ function renderBibliotecaDir(){
           <div class="bib-dir-sires">${siresHtml}</div>
         </div>
         <div class="bib-dir-section">
-          <div class="bib-dir-section-label">Áreas temáticas</div>
-          <div class="bib-dir-areas">${areasHtml}</div>
-          ${j.issn&&j.issn!=='—'?`<div class="bib-dir-issn" style="margin-top:5px">ISSN: ${j.issn}</div>`:''}
+          <div class="bib-dir-section-label">Datos</div>
+          ${j.issn&&j.issn!=='—'?`<div class="bib-dir-issn">ISSN: ${j.issn}</div>`:''}
           ${j.sjr?`<div class="bib-dir-issn" style="margin-top:3px">SJR 2024: ${j.sjr.toFixed(3)}</div>`:''}
+          ${j.anio_eval?`<div class="bib-dir-issn" style="margin-top:3px">Eval. Publindex: ${j.anio_eval}</div>`:''}
+          ${j.freq?`<div class="bib-dir-issn" style="margin-top:3px">Periodicidad: ${j.freq}</div>`:''}
         </div>
         ${linksHtml?`<div class="bib-dir-section"><div class="bib-dir-section-label">Acceso</div><div class="bib-dir-links">${linksHtml}</div></div>`:''}
       </div>
@@ -1676,6 +1688,272 @@ function toggleBibRow(id){
     }, 50);
   }
 }
+
+// ══════════════════════════════════════════════════
+// REVISTAS — Vista toggle
+// ══════════════════════════════════════════════════
+function setRevView(mode, btn) {
+  document.querySelectorAll('.rev-view-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(mode === 'list') {
+    document.getElementById('revListView').style.display = '';
+    document.getElementById('revTableView').style.display = 'none';
+    document.getElementById('revViewLabel').textContent = 'Vista expandible con SIRes';
+    renderBibliotecaDir();
+  } else {
+    document.getElementById('revListView').style.display = 'none';
+    document.getElementById('revTableView').style.display = '';
+    document.getElementById('revViewLabel').textContent = 'Vista de tabla comparativa';
+    renderMatriz();
+  }
+}
+
+// ══════════════════════════════════════════════════
+// INDEXACIONES
+// ══════════════════════════════════════════════════
+const TIPO_LABELS = {
+  ibc:'IBC — Índice citacional', base:'Base bibliográfica',
+  directorio:'Directorio', repositorio:'Repositorio / Agregador',
+  especializado:'Especializado jurídico', regional:'Índice regional / Humanidades',
+  evaluacion:'Sistema de evaluación', nacional:'Índice nacional',
+  catalogo:'Catálogo bibliotecario', otro:'Otros / Infraestructura',
+};
+const TIPO_COLORS = {
+  ibc:'#1a472a', base:'#0c5460', directorio:'#856404', repositorio:'#4a1c2e',
+  especializado:'#8b2500', regional:'#1a3a5c', evaluacion:'#2e6b3e',
+  nacional:'#721c24', catalogo:'#7a6f62', otro:'#495057',
+};
+const SIRES_CATALOG = [
+  {id:'Scopus',nombre:'Scopus',tipo:'ibc',desc:'Base Elsevier. Cuartiles Q1-Q4 vía SJR.',url:'https://www.scopus.com/sources'},
+  {id:'WoS-ESCI',nombre:'WoS — ESCI',tipo:'ibc',desc:'Emerging Sources Citation Index (Clarivate). Entrada a Web of Science.',url:'https://mjl.clarivate.com'},
+  {id:'SciELO Citation Index',nombre:'SciELO Citation Index',tipo:'ibc',desc:'Colección SciELO en Web of Science.',url:'https://mjl.clarivate.com'},
+  {id:'JCR-Clarivate',nombre:'JCR (Clarivate)',tipo:'ibc',desc:'Journal Citation Reports. Factor de impacto.',url:'https://jcr.clarivate.com'},
+  {id:'SJR-Scimago',nombre:'SJR — Scimago',tipo:'ibc',desc:'SCImago Journal Rank. Indicador basado en Scopus.',url:'https://www.scimagojr.com'},
+  {id:'Redalyc',nombre:'Redalyc',tipo:'base',desc:'Red de revistas científicas de América Latina.',url:'https://www.redalyc.org'},
+  {id:'SciELO',nombre:'SciELO',tipo:'base',desc:'Scientific Electronic Library Online.',url:'https://scielo.org'},
+  {id:'SciELO Colombia',nombre:'SciELO Colombia',tipo:'base',desc:'Colección colombiana de SciELO.',url:'http://www.scielo.org.co'},
+  {id:'EBSCOhost',nombre:'EBSCOhost',tipo:'base',desc:'Plataforma EBSCO con múltiples bases de datos.',url:'https://www.ebsco.com'},
+  {id:'Fuente Académica',nombre:'Fuente Académica (EBSCO)',tipo:'base',desc:'Base EBSCO especializada en iberoamérica.',url:'https://www.ebsco.com'},
+  {id:'ProQuest',nombre:'ProQuest',tipo:'base',desc:'Base bibliográfica multidisciplinar.',url:'https://www.proquest.com'},
+  {id:'Cengage Learning',nombre:'Cengage Learning',tipo:'base',desc:'Base de datos académica multidisciplinar.',url:'https://www.cengage.com'},
+  {id:'GALE',nombre:'GALE',tipo:'base',desc:'Base de datos académica multidisciplinar.',url:'https://www.gale.com'},
+  {id:'Europresse',nombre:'Europresse',tipo:'base',desc:'Base de datos europea de prensa y publicaciones.',url:'https://www.europresse.com'},
+  {id:'IBSS',nombre:'IBSS',tipo:'base',desc:'International Bibliography of the Social Sciences.',url:'https://www.proquest.com/products-services/ibss-set-c.html'},
+  {id:'Sociological Abstracts',nombre:'Sociological Abstracts',tipo:'base',desc:'Cobertura de literatura sociológica (ProQuest).',url:''},
+  {id:'Political Science Complete',nombre:'Political Science Complete',tipo:'base',desc:'Base especializada en ciencia política (ProQuest).',url:''},
+  {id:'IPSA',nombre:'IPSA',tipo:'base',desc:'International Political Science Association.',url:'https://www.ipsa.org'},
+  {id:'WPSA',nombre:'WPSA',tipo:'base',desc:'Worldwide Political Science Abstracts.',url:''},
+  {id:'Latindex-Catálogo',nombre:'Latindex — Catálogo 2.0',tipo:'directorio',desc:'Catálogo de calidad del sistema regional iberoamericano.',url:'https://www.latindex.org'},
+  {id:'Latindex',nombre:'Latindex',tipo:'directorio',desc:'Directorio regional de revistas iberoamericanas.',url:'https://www.latindex.org'},
+  {id:'DOAJ',nombre:'DOAJ',tipo:'directorio',desc:'Directory of Open Access Journals.',url:'https://doaj.org'},
+  {id:'MIAR',nombre:'MIAR',tipo:'directorio',desc:'Matriz de Información para el Análisis de Revistas.',url:'https://miar.ub.edu'},
+  {id:'Ulrichsweb',nombre:'Ulrichsweb',tipo:'directorio',desc:'Global Serials Directory.',url:'https://ulrichsweb.serialssolutions.com'},
+  {id:'Sherpa Romeo',nombre:'Sherpa Romeo',tipo:'directorio',desc:'Sistema de políticas de acceso abierto.',url:'https://v2.sherpa.ac.uk/romeo/'},
+  {id:'Cabells',nombre:'Cabells',tipo:'evaluacion',desc:'Directorio internacional de evaluación de revistas.',url:'https://cabells.com'},
+  {id:'CIRC',nombre:'CIRC',tipo:'evaluacion',desc:'Clasificación Integrada de Revistas Científicas.',url:'https://clasificacioncirc.es'},
+  {id:'OAJI',nombre:'OAJI',tipo:'directorio',desc:'Open Academic Journals Index.',url:'http://oaji.net'},
+  {id:'EuroPub',nombre:'EuroPub',tipo:'directorio',desc:'Directorio europeo de publicaciones académicas.',url:'https://europub.co.uk'},
+  {id:'DRJI',nombre:'DRJI',tipo:'directorio',desc:'Directory of Research Journals Indexing.',url:'http://drji.org'},
+  {id:'Actualidad Iberoamericana',nombre:'Actualidad Iberoamericana',tipo:'directorio',desc:'Índice internacional de revistas iberoamericanas.',url:''},
+  {id:'LivRe',nombre:'LivRe',tipo:'directorio',desc:'Directorio brasileño de revistas de acceso abierto.',url:''},
+  {id:'Dardo',nombre:'Dardo',tipo:'directorio',desc:'Directorio de revistas científicas.',url:''},
+  {id:'REDIB',nombre:'REDIB',tipo:'repositorio',desc:'Red Iberoamericana de Innovación y Conocimiento Científico.',url:'https://redib.org'},
+  {id:'BASE',nombre:'BASE',tipo:'repositorio',desc:'Bielefeld Academic Search Engine.',url:'https://www.base-search.net'},
+  {id:'Dimensions',nombre:'Dimensions',tipo:'repositorio',desc:'Plataforma de análisis de investigación.',url:'https://app.dimensions.ai'},
+  {id:'Scilit',nombre:'Scilit',tipo:'repositorio',desc:'Repositorio científico basado en Crossref.',url:'https://www.scilit.net'},
+  {id:'OpenAIRE',nombre:'OpenAIRE / Recolecta',tipo:'repositorio',desc:'Infraestructura europea de acceso abierto.',url:'https://www.openaire.eu'},
+  {id:'OpenAlex',nombre:'OpenAlex',tipo:'repositorio',desc:'Índice abierto de publicaciones científicas.',url:'https://openalex.org'},
+  {id:'Semantic Scholar',nombre:'Semantic Scholar',tipo:'repositorio',desc:'Buscador académico con IA (Allen Institute).',url:'https://www.semanticscholar.org'},
+  {id:'Paperity',nombre:'Paperity',tipo:'repositorio',desc:'Agregador de literatura científica de acceso abierto.',url:'https://paperity.org'},
+  {id:'Worldcat',nombre:'WorldCat',tipo:'repositorio',desc:'Mayor catálogo bibliográfico mundial.',url:'https://www.worldcat.org'},
+  {id:'HeinOnline',nombre:'HeinOnline',tipo:'especializado',desc:'Base de datos jurídica. Revistas y documentos legales.',url:'https://heinonline.org'},
+  {id:'vLex',nombre:'vLex',tipo:'especializado',desc:'Portal jurídico con jurisprudencia y revistas.',url:'https://vlex.com'},
+  {id:'LexBase',nombre:'LexBase',tipo:'especializado',desc:'Plataforma legal colombiana.',url:'https://www.lexbasecolombia.net'},
+  {id:'SSRN',nombre:'SSRN',tipo:'especializado',desc:'Social Science Research Network. Preprints.',url:'https://www.ssrn.com'},
+  {id:'Biblat',nombre:'Biblat',tipo:'regional',desc:'Bibliografía Latinoamericana (UNAM).',url:'https://biblat.unam.mx'},
+  {id:'CLASE',nombre:'CLASE',tipo:'regional',desc:'Citas Latinoamericanas en Ciencias Sociales y Humanidades (UNAM).',url:'https://clase.dgb.unam.mx'},
+  {id:'LatinREV',nombre:'LatinREV',tipo:'regional',desc:'Red cooperativa de revistas de CCSS (FLACSO Argentina).',url:'https://latinrev.flacso.org.ar'},
+  {id:'LatAm Estudios',nombre:'LatAm Estudios',tipo:'regional',desc:'Base de datos de revistas latinoamericanas.',url:''},
+  {id:'Periódica',nombre:'Periódica',tipo:'regional',desc:'Índice de Revistas Latinoamericanas en Ciencias (UNAM).',url:''},
+  {id:'ERIH Plus',nombre:'ERIH Plus',tipo:'regional',desc:'European Reference Index for the Humanities (NSD Noruega).',url:'https://kanalregister.hkdir.no/publiseringskanaler/erihplus'},
+  {id:'ANVUR',nombre:'ANVUR',tipo:'evaluacion',desc:'Agencia Nacional de Evaluación de Universidades de Italia.',url:'https://www.anvur.it'},
+  {id:'Sapiens Research',nombre:'Sapiens Research',tipo:'evaluacion',desc:'Sistema colombiano de medición de impacto.',url:'https://www.sapiensresearch.org'},
+  {id:'Journal Scholar Metrics',nombre:'Journal Scholar Metrics',tipo:'evaluacion',desc:'Métricas de revistas basadas en Google Scholar.',url:''},
+  {id:'NSD-Publiseringskanaler',nombre:'NSD — Publiseringskanaler',tipo:'evaluacion',desc:'Registro noruego de canales de publicación.',url:'https://kanalregister.hkdir.no'},
+  {id:'AmeliCA',nombre:'AmeliCA',tipo:'otro',desc:'Infraestructura de comunicación académica para América Latina.',url:'http://amelica.org'},
+  {id:'AURA',nombre:'AURA',tipo:'evaluacion',desc:'Sistema de evaluación de revistas latinoamericanas.',url:''},
+  {id:'DEYCRIT',nombre:'DEYCRIT',tipo:'evaluacion',desc:'Sistema de evaluación de revistas.',url:''},
+  {id:'Publindex',nombre:'Publindex',tipo:'nacional',desc:'Índice Bibliográfico Nacional de Minciencias. Categorías A1, A2, B, C.',url:'https://minciencias.gov.co/content/publindex'},
+  {id:'Crossref',nombre:'Crossref',tipo:'otro',desc:'Infraestructura de DOI y metadatos.',url:'https://www.crossref.org'},
+  {id:'ORCID',nombre:'ORCID',tipo:'otro',desc:'Identificadores únicos para investigadores.',url:'https://orcid.org'},
+  {id:'Google Scholar',nombre:'Google Scholar',tipo:'otro',desc:'Buscador académico. H5-index y métricas.',url:'https://scholar.google.com'},
+  {id:'Impactstory',nombre:'Impactstory',tipo:'otro',desc:'Plataforma de métricas alternativas.',url:'https://profiles.impactstory.org'},
+  {id:'Research4Life',nombre:'Research4Life',tipo:'otro',desc:'Acceso a literatura para países en desarrollo.',url:'https://www.research4life.org'},
+  {id:'Digitalia',nombre:'Digitalia',tipo:'base',desc:'Plataforma de libros y revistas en español.',url:'https://www.digitaliapublishing.com'},
+  {id:'EZB',nombre:'EZB',tipo:'catalogo',desc:'Elektronische Zeitschriftenbibliothek (Alemania).',url:''},
+  {id:'REBIUN',nombre:'REBIUN',tipo:'catalogo',desc:'Red de Bibliotecas Universitarias Españolas.',url:'https://www.rebiun.org'},
+  {id:'Connected Papers',nombre:'Connected Papers',tipo:'repositorio',desc:'Herramienta visual de exploración de literatura.',url:'https://www.connectedpapers.com'},
+  {id:'Zenodo',nombre:'Zenodo',tipo:'repositorio',desc:'Repositorio de acceso abierto (CERN/OpenAIRE).',url:'https://zenodo.org'},
+  {id:'CRUE',nombre:'CRUE',tipo:'catalogo',desc:'Red de Bibliotecas Universitarias Españolas.',url:'https://www.rebiun.org'},
+  {id:'Gateway Bayern',nombre:'Gateway Bayern',tipo:'catalogo',desc:'Portal de bibliotecas bávaras.',url:''},
+];
+
+function renderIndexaciones() {
+  const q = (document.getElementById('idxSearch')?.value||'').toLowerCase().trim();
+  const tipo = document.getElementById('idxFilterTipo')?.value||'';
+  const sirMap = {};
+  JOURNALS.filter(j=>j.status==='activa').forEach(j => {
+    if(!j.sires) return;
+    j.sires.forEach(s => { if(!sirMap[s]) sirMap[s]=[]; sirMap[s].push(j); });
+  });
+  const seen = new Set();
+  let catalog = SIRES_CATALOG.filter(s => {
+    if(seen.has(s.id)) return false; seen.add(s.id);
+    if(tipo && s.tipo!==tipo) return false;
+    if(q && !s.nombre.toLowerCase().includes(q) && !s.desc.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  catalog.sort((a,b)=>{
+    const ca=(sirMap[a.id]||[]).length, cb=(sirMap[b.id]||[]).length;
+    return cb!==ca ? cb-ca : a.nombre.localeCompare(b.nombre);
+  });
+  const count = document.getElementById('idxCount');
+  if(count) count.textContent = `${catalog.length} SIRes`;
+  const container = document.getElementById('idxList');
+  if(!catalog.length){container.innerHTML='<div class="bib-dir-empty">No se encontraron SIRes.</div>';return;}
+  const TIPO_LABELS_MAP = TIPO_LABELS;
+  container.innerHTML = catalog.map(sir => {
+    const revistas = sirMap[sir.id]||[];
+    const color = TIPO_COLORS[sir.tipo]||'#7a6f62';
+    const label = TIPO_LABELS_MAP[sir.tipo]||sir.tipo;
+    const revHtml = revistas.length
+      ? revistas.map(j=>`<span style="font-family:'DM Mono',monospace;font-size:.56rem;background:var(--tag-bg);color:var(--muted);padding:1px 6px;border-radius:2px;margin:2px">${j.name}</span>`).join('')
+      : '<span style="font-size:.7rem;color:var(--muted);font-style:italic">Ninguna registrada</span>';
+    return `<div style="border:1px solid var(--border);border-radius:4px;margin-bottom:8px;overflow:hidden;background:var(--white)">
+      <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+        <span style="font-family:'DM Mono',monospace;font-size:.54rem;background:${color};color:white;padding:2px 7px;border-radius:2px;flex-shrink:0;text-transform:uppercase">${label}</span>
+        <span style="font-family:'Playfair Display',serif;font-size:.9rem;font-weight:600;flex:1">${sir.nombre}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);flex-shrink:0">${revistas.length} revista${revistas.length!==1?'s':''}</span>
+        ${sir.url?`<a href="${sir.url}" target="_blank" onclick="event.stopPropagation()" style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent);text-decoration:none;flex-shrink:0">↗</a>`:''}
+        <span style="color:var(--muted);font-size:.8rem">▸</span>
+      </div>
+      <div style="display:none;padding:10px 16px 14px;border-top:1px solid var(--border);background:var(--paper)">
+        <div style="font-size:.76rem;color:var(--muted);margin-bottom:10px">${sir.desc}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Revistas colombianas indexadas:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">${revHtml}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════
+// LEGEM STRATEGIC PANEL
+// ══════════════════════════════════════════════════
+function renderLegemPanel() {
+  const legem = JOURNALS.find(j=>j.legem);
+  if(!legem) return;
+  const caribeRevistas = JOURNALS.filter(j=>j.caribe && !j.legem && j.status==='activa');
+  const legemSires = new Set(legem.sires||[]);
+  const caribeSires = new Set();
+  caribeRevistas.forEach(j=>(j.sires||[]).forEach(s=>caribeSires.add(s)));
+  const gaps = [...caribeSires].filter(s=>!legemSires.has(s));
+  const statsEl = document.getElementById('legemStats');
+  if(statsEl) statsEl.innerHTML = `
+    <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold)">${legemSires.size}</div><div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#a89f8e;margin-top:3px">SIRes actuales</div></div>
+    <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold)">${gaps.length}</div><div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#a89f8e;margin-top:3px">SIRes por alcanzar</div></div>
+    <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold)">${caribeRevistas.length}</div><div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#a89f8e;margin-top:3px">Pares Caribe</div></div>`;
+  const priorityOrder = ['WoS-ESCI','Scopus','Redalyc','DOAJ','MIAR','Dialnet','REDIB','EBSCOhost','CLASE','Biblat','ERIH Plus','HeinOnline','vLex'];
+  const priorityGaps = priorityOrder.filter(s=>gaps.includes(s));
+  const otherGaps = gaps.filter(s=>!priorityOrder.includes(s));
+  const gapsEl = document.getElementById('legemGaps');
+  if(gapsEl) gapsEl.innerHTML = priorityGaps.length
+    ? `<strong style="color:var(--paper)">Prioridad alta:</strong> ${priorityGaps.map(s=>`<span style="background:rgba(255,255,255,.12);padding:1px 6px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.6rem">${s}</span>`).join(' ')}
+       ${otherGaps.length?`<br><strong style="color:#a89f8e">Otros:</strong> <span style="color:#a89f8e;font-size:.72rem">${otherGaps.join(', ')}</span>`:''}`
+    : '<span style="color:#a89f8e">Sin brechas identificadas.</span>';
+}
+
+// ══════════════════════════════════════════════════
+// MODAL DE REVISTA
+// ══════════════════════════════════════════════════
+let _modalCurrentJid = null;
+function openModal(jid) {
+  const j = JOURNALS.find(x=>x.id===jid);
+  if(!j) return;
+  _modalCurrentJid = jid;
+  document.getElementById('modalTitle').textContent = j.name;
+  document.getElementById('modalUni').textContent = j.uni+(j.ciudad?' · '+j.ciudad:'');
+  const badges=[];
+  if(j.scopus&&j.scopusQ) badges.push(`<span style="background:#e8a020;color:white;font-family:'DM Mono',monospace;font-size:.55rem;padding:2px 8px;border-radius:2px">${j.scopusQ.toUpperCase()} Scopus</span>`);
+  if(j.wosCol) badges.push(`<span style="background:#1a472a;color:white;font-family:'DM Mono',monospace;font-size:.55rem;padding:2px 8px;border-radius:2px">WoS ${j.wosCol}</span>`);
+  if(j.publindex) badges.push(`<span style="background:#0c5460;color:white;font-family:'DM Mono',monospace;font-size:.55rem;padding:2px 8px;border-radius:2px">Publindex ${j.publindex.toUpperCase()}</span>`);
+  if(j.caribe) badges.push(`<span style="background:var(--accent);color:white;font-family:'DM Mono',monospace;font-size:.55rem;padding:2px 8px;border-radius:2px">◆ Caribe</span>`);
+  if(j.legem) badges.push(`<span style="background:#8b6914;color:white;font-family:'DM Mono',monospace;font-size:.55rem;padding:2px 8px;border-radius:2px">★ LEGEM</span>`);
+  document.getElementById('modalBadges').innerHTML=badges.join('');
+  const rows=[
+    ['Fundación',j.fundacion||'—'],['ISSN',j.issn||'—'],
+    ['DOI prefix',j.doi?`<code style="font-size:.72rem">${j.doi}</code>`:'—'],
+    ['Licencia',j.licencia||'—'],['Idiomas',j.idiomas||'—'],
+    ['Acceso',j.acceso?j.acceso.charAt(0).toUpperCase()+j.acceso.slice(1):'—'],
+    ['Periodicidad',j.freq||'—'],
+    ['Región',j.dept?j.dept+(j.ciudad?', '+j.ciudad:''):'—'],
+  ];
+  document.getElementById('modalLeft').innerHTML=rows.map(([l,v])=>`<div class="modal-row"><span class="modal-row-label">${l}</span><span class="modal-row-val">${v}</span></div>`).join('');
+  const mrows=[
+    ['SJR 2024',j.sjr||'—'],['Cuartil Scopus',j.scopusQ?j.scopusQ.toUpperCase():'—'],
+    ['WoS Collection',j.wosCol||'—'],['Publindex',j.publindex?j.publindex.toUpperCase():'—'],
+    ['N.° SIRes',(j.sires||[]).length||'—'],
+  ];
+  document.getElementById('modalRight').innerHTML=mrows.map(([l,v])=>`<div class="modal-row"><span class="modal-row-label">${l}</span><span class="modal-row-val">${v}</span></div>`).join('');
+  const sires=j.sires||[];
+  document.getElementById('modalSires').innerHTML=sires.length
+    ?sires.map(s=>`<span class="modal-sir-tag">${s}</span>`).join('')
+    :'<span style="font-size:.72rem;color:var(--muted);font-style:italic">Sin SIRes registrados</span>';
+  document.getElementById('modalNota').textContent=j.nota||'';
+  const pl=document.getElementById('modalPortal');
+  if(j.url&&j.url!=='#'){pl.href=j.url;pl.style.display='';}else{pl.style.display='none';}
+  document.getElementById('revistaModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('revistaModal').classList.remove('open');
+  document.body.style.overflow='';
+  _modalCurrentJid=null;
+}
+function goToIndexaciones(){
+  closeModal();
+  switchTab('indexaciones',document.querySelector('.tab-btn:nth-child(3)'));
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
 </script>
+
+<!-- ── MODAL DE REVISTA ── -->
+<div class="modal-overlay" id="revistaModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-uni" id="modalUni"></div>
+      <div class="modal-badges" id="modalBadges"></div>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="modal-section-title">Datos editoriales</div>
+        <div id="modalLeft"></div>
+      </div>
+      <div>
+        <div class="modal-section-title">Métricas e indexaciones</div>
+        <div id="modalRight"></div>
+        <div class="modal-section-title" style="margin-top:14px">SIRes registrados</div>
+        <div class="modal-sires" id="modalSires"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-nota" id="modalNota"></div>
+      <a id="modalPortal" href="#" target="_blank" class="modal-btn">Portal OJS ↗</a>
+      <button class="modal-btn modal-btn-ghost" onclick="goToIndexaciones()">Ver en Indexaciones</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
