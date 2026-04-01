@@ -1449,7 +1449,7 @@ function renderMatriz(){
   document.getElementById('matrizBody').innerHTML=data.map(j=>`
     <tr class="${j.legem?'legem-row':j.caribe?'caribe-row':''}">
       <td>
-        <div class="td-name">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}</div>
+        <div class="td-name" style="cursor:pointer" onclick="openModal('${j.id}')">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}</div>
         <div class="td-uni">${j.uni}${j.caribe?' <span class="caribe-badge">Caribe</span>':''}</div>
       </td>
       <td>${j.publindex&&j.publindex!=='nd'?`<span class="tag ${j.publindex}">${j.publindex.toUpperCase()}</span>`:'<span class="metric-na">—</span>'}</td>
@@ -1649,7 +1649,7 @@ function renderBibliotecaDir(){
       <div class="bib-dir-main" onclick="toggleBibRow('${j.id}')">
         <span class="bib-dir-num">${String(i+1).padStart(2,'0')}</span>
         <div style="flex:1;min-width:0">
-          <div class="bib-dir-name">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}${statusBadge[j.status]||''}</div>
+          <div class="bib-dir-name" style="cursor:pointer" onclick="event.stopPropagation();openModal('${j.id}')">${j.legem?'★ ':j.caribe?'◆ ':''}${j.name}${statusBadge[j.status]||''}</div>
           <div class="bib-dir-uni">${j.uni}${j.ciudad&&j.ciudad!=='No disponible'?' · '+j.ciudad:''}</div>
         </div>
         <div class="bib-dir-badges">
